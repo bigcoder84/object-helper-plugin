@@ -27,7 +27,7 @@
   </extensions>
 
   <actions>
-    <action id="ObjectHelper" class="cn.bigcoder.plugin.objecthelper.ObjectHelper" text="generateo2o">
+    <action id="ObjectHelper" class="cn.bigcoder.plugin.objecthelper.GenerateO2O" text="generateo2o">
       <add-to-group group-id="GenerateGroup" anchor="last"/>
     </action>
   </actions>
