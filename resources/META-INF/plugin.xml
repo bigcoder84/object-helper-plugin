@@ -1,0 +1,35 @@
+<idea-plugin>
+  <id>cn.bigcoder.plugin.objecthelper</id>
+  <name>ObjectHelper</name>
+  <version>1.0</version>
+  <vendor email="bigcoder84@gmail.com" url="https://github.com/tianjindong/object-helper-plugin">HearingSmile</vendor>
+
+  <description><![CDATA[
+      这是一个Java对象工具集
+      <li>对象拷贝</li>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      init
+    ]]>
+  </change-notes>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!--<depends>com.intellij.modules.platform</depends>-->
+  <depends>com.intellij.modules.java</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <action id="ObjectHelper" class="cn.bigcoder.plugin.objecthelper.ObjectHelper" text="generateo2o">
+      <add-to-group group-id="GenerateGroup" anchor="last"/>
+    </action>
+  </actions>
+
+</idea-plugin>
