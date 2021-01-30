@@ -15,6 +15,14 @@ import java.util.List;
  **/
 public abstract class AbstractMethodGenerator implements Generator {
 
+    protected static final int FIRST_INDEX = 0;
+    protected static final String EMPTY_BODY = "";
+    protected static final String BLANK_SEPARATOR = " ";
+    protected static final String LINE_SEPARATOR = "\n";
+    protected static final String COMMA_SEPARATOR = ",";
+
+    protected static final String VOID_KEYWORD = "void";
+
     /**
      * 方法修饰符
      */
@@ -40,18 +48,18 @@ public abstract class AbstractMethodGenerator implements Generator {
     public String generate() {
         StringBuilder result = generateMethodFirstLine()
                 .append(generateMethodBody())
-                .append("}\n");
+                .append("}");
         return result.toString();
     }
 
     protected StringBuilder generateMethodFirstLine() {
         StringBuilder builder = new StringBuilder();
-        methodModifies.forEach(e -> builder.append(e.getName() + " "));
-        builder.append(returnClassName + " ")
+        methodModifies.forEach(e -> builder.append(e.getName()).append(BLANK_SEPARATOR));
+        builder.append(returnClassName + BLANK_SEPARATOR)
                 .append(methodName)
                 .append("(")
-                .append(StringUtils.join(parameters, PsiParameter::getText, " ,"))
-                .append(") {\n");
+                .append(StringUtils.join(parameters, PsiParameter::getText, COMMA_SEPARATOR))
+                .append("){");
         return builder;
     }
 

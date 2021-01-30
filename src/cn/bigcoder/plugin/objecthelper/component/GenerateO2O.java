@@ -8,34 +8,27 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 
 public class GenerateO2O extends AnAction {
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
-        PsiMethod method = getPsiMethodFromContext(e);
-        generateO2OMethod(method);
-    }
-
-    /**
-     * 启动写线程
-     *
-     * @param psiMethod
-     */
-    private void generateO2OMethod(PsiMethod psiMethod) {
-        new WriteCommandAction.Simple(psiMethod.getProject(), psiMethod.getContainingFile()) {
-            @Override
-            protected void run() throws Throwable {
-                generateO2O(psiMethod);
-            }
-        }.execute();
+    public void actionPerformed(AnActionEvent anActionEvent) {
+        WriteCommandAction.runWriteCommandAction(anActionEvent.getProject(), () -> {
+            generateO2O(getPsiMethodFromContext(anActionEvent));
+        });
     }
 
     private void generateO2O(PsiMethod psiMethod) {
+        if (psiMethod == null) {
+            return;
+        }
+        // 初始化生成器
         Generator generator = ObjectCopyMethodGenerator.getInstance(psiMethod);
         PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiMethod.getProject());
+        // 生成新的PsiMethod
         PsiMethod toMethod = elementFactory.createMethodFromText(generator.generate(), psiMethod);
         psiMethod.replace(toMethod);
     }
@@ -55,7 +48,7 @@ public class GenerateO2O extends AnAction {
             e.getPresentation().setEnabled(false);
             return null;
         }
-        //用来获取当前光标处的PsiElement
+        //获取当前光标处的PsiElement
         int offset = editor.getCaretModel().getOffset();
         return psiFile.findElementAt(offset);
     }

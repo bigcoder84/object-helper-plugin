@@ -1,21 +1,22 @@
 <idea-plugin>
   <id>cn.bigcoder.plugin.objecthelper</id>
   <name>ObjectHelper</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <vendor email="bigcoder84@gmail.com" url="https://github.com/tianjindong/object-helper-plugin">HearingSmile</vendor>
 
   <description><![CDATA[
-      这是一个Java对象工具集
-      <li>对象拷贝</li>
+      This is a Java object toolset
+      <li>Copy the object</li>
+      <img style="width: 400px" src="https://image.bigcoder.cn/6d6af6fd-255c-4d32-83bb-85b39280460d.gif"></img>
     ]]></description>
 
   <change-notes><![CDATA[
-      init
+      <li>Fix bug：fixed bugs in exception scenarios.Improve plugin compatibility.</li>
     ]]>
   </change-notes>
 
   <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="173.0"/>
+  <idea-version since-build="182.0"/>
 
   <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
