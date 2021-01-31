@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cn.bigcoder.plugin.objecthelper</id>
   <name>ObjectHelper</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <vendor email="bigcoder84@gmail.com" url="https://github.com/tianjindong/object-helper-plugin">HearingSmile</vendor>
 
   <description><![CDATA[
@@ -11,7 +11,8 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <li>Fix bug：fixed bugs in exception scenarios.Improve plugin compatibility.</li>
+      <li>Fix bug：Fixed location visibility of GenerateO2O components outside of methods</li>
+      <li>Add logo</li>
     ]]>
   </change-notes>
 
@@ -28,7 +29,7 @@
   </extensions>
 
   <actions>
-    <action id="ObjectHelper" class="cn.bigcoder.plugin.objecthelper.GenerateO2O" text="generateo2o">
+    <action id="ObjectHelper" class="cn.bigcoder.plugin.objecthelper.component.GenerateO2O" text="GenerateO2O">
       <add-to-group group-id="GenerateGroup" anchor="last"/>
     </action>
   </actions>

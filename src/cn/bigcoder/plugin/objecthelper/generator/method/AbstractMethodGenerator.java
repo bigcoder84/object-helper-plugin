@@ -1,13 +1,16 @@
 package cn.bigcoder.plugin.objecthelper.generator.method;
 
-import cn.bigcoder.plugin.objecthelper.common.enums.JavaModify;
-import cn.bigcoder.plugin.objecthelper.generator.Generator;
+import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
-import com.intellij.psi.PsiClass;
+import cn.bigcoder.plugin.objecthelper.generator.Generator;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
+
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaSeparator.*;
+import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.*;
 
 /**
  * @author: Jindong.Tian
@@ -16,34 +19,9 @@ import java.util.List;
 public abstract class AbstractMethodGenerator implements Generator {
 
     protected static final int FIRST_INDEX = 0;
-    protected static final String EMPTY_BODY = "";
-    protected static final String BLANK_SEPARATOR = " ";
-    protected static final String LINE_SEPARATOR = "\n";
-    protected static final String COMMA_SEPARATOR = ",";
 
-    protected static final String VOID_KEYWORD = "void";
-
-    /**
-     * 方法修饰符
-     */
-    protected List<JavaModify> methodModifies;
-    /**
-     * 方法返回类型名称
-     */
-    protected String returnClassName;
-    /**
-     * 方法名称
-     */
-    protected String methodName;
-    /**
-     * 方法参数
-     */
-    protected List<PsiParameter> parameters;
-    /**
-     * 方法参数
-     */
-    protected List<PsiClass> parameterClass;
-
+    protected Project project;
+    protected PsiMethod psiMethod;
 
     public String generate() {
         StringBuilder result = generateMethodFirstLine()
@@ -52,28 +30,20 @@ public abstract class AbstractMethodGenerator implements Generator {
         return result.toString();
     }
 
+    abstract String generateMethodBody();
+
     protected StringBuilder generateMethodFirstLine() {
         StringBuilder builder = new StringBuilder();
-        methodModifies.forEach(e -> builder.append(e.getName()).append(BLANK_SEPARATOR));
-        builder.append(returnClassName + BLANK_SEPARATOR)
-                .append(methodName)
-                .append("(")
-                .append(StringUtils.join(parameters, PsiParameter::getText, COMMA_SEPARATOR))
-                .append("){");
+        PsiUtils.getMethodModifies(psiMethod.getModifierList()).forEach(e -> builder.append(e.getName()).append(BLANK_SEPARATOR));
+        builder.append(getMethodReturnClassName(psiMethod) + BLANK_SEPARATOR)
+                .append(getMethodName(psiMethod))
+                .append(PARENTHESIS_OPEN)
+                .append(StringUtils.join(getParameters(), PsiParameter::getText, COMMA_SEPARATOR))
+                .append(PARENTHESIS_CLOSE + BRACE_OPEN);
         return builder;
     }
 
-    protected boolean hasModifierProperty(String modify) {
-        if (CollectionUtils.isEmpty(methodModifies)) {
-            return false;
-        }
-        for (JavaModify methodModify : methodModifies) {
-            if (methodModify.getName().equals(modify)) {
-                return true;
-            }
-        }
-        return false;
+    protected List<PsiParameter> getParameters() {
+        return getPsiParameters(psiMethod);
     }
-
-    abstract String generateMethodBody();
 }

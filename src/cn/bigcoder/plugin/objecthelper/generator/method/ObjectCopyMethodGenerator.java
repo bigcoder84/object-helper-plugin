@@ -1,16 +1,13 @@
 package cn.bigcoder.plugin.objecthelper.generator.method;
 
-import cn.bigcoder.plugin.objecthelper.common.enums.JavaModify;
 import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
 import com.intellij.psi.*;
-import com.intellij.psi.search.GlobalSearchScope;
 import org.apache.commons.collections.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaSeparator.*;
+import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getMethodReturnClassName;
+import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getPsiClass;
 
 /**
  * @author: Jindong.Tian
@@ -19,11 +16,11 @@ import java.util.stream.Collectors;
 public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
 
     private void init(PsiMethod psiMethod) {
-        super.methodName = psiMethod.getName();
-        super.returnClassName = getReturnClassName(psiMethod);
-        super.parameters = Arrays.asList(psiMethod.getParameterList().getParameters());
-        super.parameterClass = super.parameters.stream().map(e -> transferPsiClass(e, psiMethod)).collect(Collectors.toList());
-        super.methodModifies = getMethodModifies(psiMethod.getModifierList());
+        if (psiMethod == null) {
+            return;
+        }
+        super.project = psiMethod.getProject();
+        super.psiMethod = psiMethod;
     }
 
     public static ObjectCopyMethodGenerator getInstance(PsiMethod psiMethod) {
@@ -34,13 +31,13 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
 
     @Override
     protected String generateMethodBody() {
-        if (CollectionUtils.isEmpty(parameters) || VOID_KEYWORD.equals(returnClassName)) {
+        if (CollectionUtils.isEmpty(getParameters()) || VOID.equals(getMethodReturnClassName(psiMethod))) {
             return EMPTY_BODY;
         }
         StringBuilder result = new StringBuilder();
-        String returnObjName = StringUtils.firstLowerCase(returnClassName);
-        PsiParameter firstParameter = parameters.get(FIRST_INDEX);
-        PsiClass firstParameterClass = parameterClass.get(FIRST_INDEX);
+        String returnObjName = StringUtils.firstLowerCase(getMethodReturnClassName(psiMethod));
+        PsiParameter firstParameter = getParameters().get(FIRST_INDEX);
+        PsiClass firstParameterClass = getPsiClass(firstParameter.getType(), project);
         if (firstParameterClass == null) {
             return EMPTY_BODY;
         }
@@ -68,7 +65,7 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
      */
     @NotNull
     private String generateObjectCreateLine(String returnObjName) {
-        return returnClassName + BLANK_SEPARATOR + returnObjName + "= new " + returnClassName + "();" + LINE_SEPARATOR;
+        return getMethodReturnClassName(psiMethod) + BLANK_SEPARATOR + returnObjName + "= new " + getMethodReturnClassName(psiMethod) + "();" + LINE_SEPARATOR;
     }
 
     /**
@@ -92,7 +89,7 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
      */
     @NotNull
     private String generateReturnLine(String returnObjName) {
-        return "return " + returnObjName + ";" + LINE_SEPARATOR;
+        return "return " + returnObjName + SEMICOLON_SEPARATOR;
     }
 
     /**
@@ -103,39 +100,5 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
      */
     private String generateNullCheck(String parameterName) {
         return "if(" + parameterName + "==null){return null;}";
-    }
-
-    private static String getReturnClassName(PsiMethod psiMethod) {
-        PsiType returnType = psiMethod.getReturnType();
-        if (returnType == null) {
-            return "void";
-        }
-        return returnType.getPresentableText();
-    }
-
-    private static PsiClass transferPsiClass(PsiParameter psiParameter, PsiMethod psiMethod) {
-        //带package的class名称
-        String parameterClassWithPackage = psiParameter.getType().getInternalCanonicalText();
-        //为了解析字段，这里需要加载参数的class
-        JavaPsiFacade facade = JavaPsiFacade.getInstance(psiMethod.getProject());
-        return facade.findClass(parameterClassWithPackage, GlobalSearchScope.allScope(psiMethod.getProject()));
-    }
-
-    private List<JavaModify> getMethodModifies(PsiModifierList modifierList) {
-        List<JavaModify> result = new ArrayList<>();
-        if (modifierList.hasModifierProperty(JavaModify.PUBLIC.getName())) {
-            result.add(JavaModify.PUBLIC);
-        } else if (modifierList.hasModifierProperty(JavaModify.PROTECTED.getName())) {
-            result.add(JavaModify.PROTECTED);
-        } else if (modifierList.hasModifierProperty(JavaModify.PRIVATE.getName())) {
-            result.add(JavaModify.PRIVATE);
-        }
-        if (modifierList.hasModifierProperty(JavaModify.STATIC.getName())) {
-            result.add(JavaModify.STATIC);
-        }
-        if (modifierList.hasModifierProperty(JavaModify.FINAL.getName())) {
-            result.add(JavaModify.FINAL);
-        }
-        return result;
     }
 }
