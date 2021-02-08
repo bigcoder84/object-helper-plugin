@@ -1,6 +1,6 @@
 package cn.bigcoder.plugin.objecthelper.common.util;
 
-import cn.bigcoder.plugin.objecthelper.common.constant.JavaSeparator;
+import cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord;
 import cn.bigcoder.plugin.objecthelper.common.enums.JavaModify;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -9,6 +9,8 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -22,7 +24,21 @@ import java.util.List;
 public class PsiUtils {
 
     /**
+     * 获取光标处上下文的{@code PsiMethod}
+     * @param actionEvent
+     * @return
+     */
+    public static PsiMethod getCursorPsiMethod(AnActionEvent actionEvent) {
+        PsiElement elementAt = PsiUtils.getCursorPsiElement(actionEvent);
+        if (elementAt == null) {
+            return null;
+        }
+        return PsiTreeUtil.getParentOfType(elementAt, PsiMethod.class);
+    }
+
+    /**
      * 获取光标所在处的{@code PsiElement}
+     *
      * @param anActionEvent
      * @return
      */
@@ -36,6 +52,14 @@ public class PsiUtils {
         //获取当前光标处的PsiElement
         int offset = editor.getCaretModel().getOffset();
         return psiFile.findElementAt(offset);
+    }
+
+    /**
+     * 设置当前组件不可用（不显示）
+     * @param anActionEvent
+     */
+    public static void setActionDisabled(AnActionEvent anActionEvent){
+        anActionEvent.getPresentation().setEnabled(false);
     }
 
     /**
@@ -58,6 +82,7 @@ public class PsiUtils {
 
     /**
      * 获取方法名称
+     *
      * @param psiMethod
      * @return
      */
@@ -70,6 +95,7 @@ public class PsiUtils {
 
     /**
      * 获取方法返回名称
+     *
      * @param psiMethod
      * @return
      */
@@ -77,18 +103,19 @@ public class PsiUtils {
     public static String getMethodReturnClassName(PsiMethod psiMethod) {
         PsiType returnType = psiMethod.getReturnType();
         if (returnType == null) {
-            return JavaSeparator.VOID;
+            return JavaKeyWord.VOID;
         }
         return returnType.getPresentableText();
     }
 
     /**
      * 获取方法的参数列表
+     *
      * @param psiMethod
      * @return
      */
     @NotNull
-    public static List<PsiParameter> getPsiParameters(PsiMethod psiMethod){
+    public static List<PsiParameter> getPsiParameters(PsiMethod psiMethod) {
         return Arrays.asList(psiMethod.getParameterList().getParameters());
     }
 
@@ -115,5 +142,31 @@ public class PsiUtils {
             result.add(JavaModify.FINAL);
         }
         return result;
+    }
+
+    /**
+     * 获取{@code PsiClass}所有字段（包含父类字段）
+     *
+     * @param psiClass
+     * @return
+     */
+    @NotNull
+    public static List<PsiField> getAllPsiFields(PsiClass psiClass) {
+        List<PsiField> result = Lists.newArrayList();
+        recursiveAllFields(psiClass, result);
+        return result;
+    }
+
+    /**
+     * 递归获取类中所有字段
+     * @param psiClass
+     * @param psiFields
+     */
+    private static void recursiveAllFields(PsiClass psiClass, List<PsiField> psiFields) {
+        if (psiClass == null) {
+            return;
+        }
+        psiFields.addAll(Arrays.asList(psiClass.getFields()));
+        recursiveAllFields(psiClass.getSuperClass(), psiFields);
     }
 }

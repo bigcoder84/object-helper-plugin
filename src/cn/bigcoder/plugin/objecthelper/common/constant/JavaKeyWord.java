@@ -4,7 +4,7 @@ package cn.bigcoder.plugin.objecthelper.common.constant;
  * @author: Jindong.Tian
  * @date: 2021-01-31
  **/
-public class JavaSeparator {
+public class JavaKeyWord {
     public static final String EMPTY_BODY = "";
     public static final String BLANK_SEPARATOR = " ";
     public static final String LINE_SEPARATOR = "\n";
