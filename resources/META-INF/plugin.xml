@@ -1,17 +1,20 @@
 <idea-plugin>
   <id>cn.bigcoder.plugin.objecthelper</id>
   <name>ObjectHelper</name>
-  <version>1.0.3</version>
-  <vendor email="bigcoder84@gmail.com" url="https://github.com/tianjindong/object-helper-plugin">HearingSmile</vendor>
+  <version>1.1.0</version>
+  <vendor email="bigcoder84@gmail.com" url="https://github.com/bigcoder84/object-helper-plugin">HearingSmile</vendor>
 
   <description><![CDATA[
-      This is a Java object toolset
+      This is a Java object toolset.Using document:<a href="https://github.com/bigcoder84/object-helper-plugin">GitHub</a>
       <li>Copy the object</li>
-      <img style="width: 400px" src="https://image.bigcoder.cn/6d6af6fd-255c-4d32-83bb-85b39280460d.gif"></img>
+      <img style="width: 300px" src="https://image.bigcoder.cn/7fce876e-fa94-4780-bb14-584068c35963.gif"></img>
+      <li>Class to JSON</li>
+      <img style="width: 300px" src="https://image.bigcoder.cn/20210227223302.gif"></img>
     ]]></description>
 
   <change-notes><![CDATA[
-      <li>Fix bug：Fixed parent field not being generated</li>
+      <li>New feature：Added the ability to quickly convert Java classes to JSON</li>
+      <li>Update feature：Rename GenerateO2O to Object Method Copy</li>
     ]]>
   </change-notes>
 
@@ -28,8 +31,19 @@
   </extensions>
 
   <actions>
-    <action id="cn.bigcoder.plugin.objecthelper.action.GenerateO2O" class="cn.bigcoder.plugin.objecthelper.action.GenerateO2O" text="GenerateO2O">
+    <action id="cn.bigcoder.plugin.objecthelper.action.ObjectCopyMethodAction" class="cn.bigcoder.plugin.objecthelper.action.ObjectCopyMethodAction" text="Object Copy Method">
       <add-to-group group-id="GenerateGroup" anchor="last"/>
+    </action>
+    <action id="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction"
+            class="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction" text="Class To JSON(Format)"
+            description="Converts the object to a JSON string">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift alt P"/>
+    </action>
+    <action id="cn.bigcoder.plugin.objecthelper.action.ClassToJsonAction"
+            class="cn.bigcoder.plugin.objecthelper.action.ClassToJsonAction" text="Class To JSON"
+            description="Converts the object to a JSON string">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
     </action>
   </actions>
 

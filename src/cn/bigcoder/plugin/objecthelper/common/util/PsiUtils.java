@@ -25,11 +25,12 @@ public class PsiUtils {
 
     /**
      * 获取光标处上下文的{@code PsiMethod}
+     *
      * @param actionEvent
      * @return
      */
     public static PsiMethod getCursorPsiMethod(AnActionEvent actionEvent) {
-        PsiElement elementAt = PsiUtils.getCursorPsiElement(actionEvent);
+        PsiElement elementAt = getCursorPsiElement(actionEvent);
         if (elementAt == null) {
             return null;
         }
@@ -37,7 +38,22 @@ public class PsiUtils {
     }
 
     /**
-     * 获取光标所在处的{@code PsiElement}
+     * 获取当前操作下的 {@code PsiClass}
+     *
+     * @param actionEvent
+     * @return
+     */
+    public static PsiClass getOperatePsiClass(AnActionEvent actionEvent) {
+        PsiElement psiElement = getOperatePsiElement(actionEvent);
+        if (psiElement instanceof PsiClass) {
+            return (PsiClass) psiElement;
+        }
+        return null;
+    }
+
+    /**
+     * 通过偏移量获取光标所在处的{@code PsiElement}
+     * 这将返回指定偏移量中的最低级别元素，这通常是一个 lexer 令牌。最有可能你应该使用{@code PsiTreeUtil.getParentOfType()}来查找您真正需要的元素。
      *
      * @param anActionEvent
      * @return
@@ -55,11 +71,31 @@ public class PsiUtils {
     }
 
     /**
-     * 设置当前组件不可用（不显示）
+     * 从操作中获取{@code PsiElement}。注意：如果编辑器当前处于打开状态，并且 caret 中的元素是引用，则这将返回解析引用的结果。这可能是你需要的，也可能不是。
+     *
+     * @param anActionEvent
+     * @return
+     */
+    public static PsiElement getOperatePsiElement(AnActionEvent anActionEvent) {
+        return anActionEvent.getData(LangDataKeys.PSI_ELEMENT);
+    }
+
+    /**
+     * 设置当前组件不可用
+     *
      * @param anActionEvent
      */
-    public static void setActionDisabled(AnActionEvent anActionEvent){
+    public static void setActionDisabled(AnActionEvent anActionEvent) {
         anActionEvent.getPresentation().setEnabled(false);
+    }
+
+    /**
+     * 设置当前组件不可见
+     *
+     * @param anActionEvent
+     */
+    public static void setActionInvisible(AnActionEvent anActionEvent) {
+        anActionEvent.getPresentation().setVisible(false);
     }
 
     /**
@@ -159,6 +195,7 @@ public class PsiUtils {
 
     /**
      * 递归获取类中所有字段
+     *
      * @param psiClass
      * @param psiFields
      */

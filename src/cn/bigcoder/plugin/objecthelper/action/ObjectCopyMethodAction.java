@@ -12,9 +12,9 @@ import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiMethod;
 import org.jetbrains.annotations.NotNull;
 
-import static cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord.*;
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord.VOID;
 
-public class GenerateO2O extends AnAction {
+public class ObjectCopyMethodAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -25,7 +25,7 @@ public class GenerateO2O extends AnAction {
 
     @Override
     public void update(@NotNull AnActionEvent anActionEvent) {
-        // 如果当前光标不在方法中，则不显示GernerateO2O组件
+        // 如果当前光标不在方法中，则不显示Object Copy组件
         if (!check(PsiUtils.getCursorPsiMethod(anActionEvent))) {
             PsiUtils.setActionDisabled(anActionEvent);
         }
