@@ -2,9 +2,11 @@
 ![](https://img.shields.io/badge/version-v1.1.0-blue)
 ![](https://img.shields.io/badge/license-Apache%202-red)
 ![](https://img.shields.io/badge/size-28%20kB-yellowgreen)
-![](https://img.shields.io/badge/download-200%2B-green)
+![](https://img.shields.io/badge/download-400%2B-green)
 
-JetBrains Intellij IDEA Object插件，包含以下功能：
+插件地址：[https://plugins.jetbrains.com/plugin/15788-objecthelper](https://plugins.jetbrains.com/plugin/15788-objecthelper)
+
+JetBrains Intellij IDEA ObjectHelper插件，包含以下功能：
 
 - 对象拷贝
 
