@@ -1,20 +1,21 @@
 <idea-plugin>
   <id>cn.bigcoder.plugin.objecthelper</id>
   <name>ObjectHelper</name>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <vendor email="bigcoder84@gmail.com" url="https://github.com/bigcoder84/object-helper-plugin">HearingSmile</vendor>
 
   <description><![CDATA[
-      This is a Java object toolset.Using document:<a href="https://github.com/bigcoder84/object-helper-plugin">GitHub</a>
+      This is a Java object toolset. Using document: <a href="https://github.com/bigcoder84/object-helper-plugin">GitHub</a>
       <li>Copy the object</li>
       <img style="width: 300px" src="https://image.bigcoder.cn/7fce876e-fa94-4780-bb14-584068c35963.gif"></img>
       <li>Class to JSON</li>
       <img style="width: 300px" src="https://image.bigcoder.cn/20210227223302.gif"></img>
+      <li>Class to IDL</li>
+      <img style="width: 300px" src="https://image.bigcoder.cn/6eee7a02-8e4e-4f11-9b8c-81d661a920c5.gif"></img>
     ]]></description>
 
   <change-notes><![CDATA[
-      <li>New feature：Added the ability to quickly convert Java classes to JSON</li>
-      <li>Update feature：Rename GenerateO2O to Object Method Copy</li>
+      <li>New feature：Added the ability to quickly convert Java classes to IDL</li>
     ]]>
   </change-notes>
 
@@ -35,14 +36,14 @@
       <add-to-group group-id="GenerateGroup" anchor="last"/>
     </action>
     <action id="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction"
-            class="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction" text="Class To JSON(Format)"
-            description="Converts the object to a JSON string">
+            class="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction" text="Class To JSON"
+            description="Converts the Java class to a JSON string">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift alt P"/>
     </action>
-    <action id="cn.bigcoder.plugin.objecthelper.action.ClassToJsonAction"
-            class="cn.bigcoder.plugin.objecthelper.action.ClassToJsonAction" text="Class To JSON"
-            description="Converts the object to a JSON string">
+    <action id="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction"
+            class="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction" text="Class To IDL"
+            description="Converts the Java class to a IDL string">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
     </action>
   </actions>

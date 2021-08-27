@@ -11,24 +11,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaClassName.*;
+
 /**
  * @author: Jindong.Tian
  * @date: 2021-02-12
  **/
 public class PsiTypeUtils {
-    private static final String STRING_TYPE = "java.lang.String";
-    private static final String INTEGER_TYPE = "java.lang.Integer";
-    private static final String LONG_TYPE = "java.lang.Long";
-    private static final String SHORT_TYPE = "java.lang.Short";
-    private static final String BYTE_TYPE = "java.lang.Byte";
-    private static final String DOUBLE_TYPE = "java.lang.Double";
-    private static final String FLOAT_TYPE = "java.lang.Float";
-    private static final String DATE_TYPE = "java.util.Date";
-    private static final String LOCAL_DATE_TYPE = "java.time.LocalDate";
-    private static final String LOCAL_DATE_TIME_TYPE = "java.time.LocalDateTime";
-
-    private static final String COLLECTION_TYPE = "java.util.Collection";
-    private static final String OBJECT_TYPE = "java.lang.Object";
 
     /**
      * 获取数据类型的默认值
@@ -100,12 +89,53 @@ public class PsiTypeUtils {
     }
 
     /**
-     * 判断是否是Collection类型
+     * 判断是否是java.util.Collection类型
      *
      * @param psiType
      * @return
      */
     public static boolean isCollectionType(PsiType psiType) {
+        return isSpecifiedType(psiType, COLLECTION_TYPE);
+    }
+
+    /**
+     * 判断是否是java.util.List类型
+     *
+     * @param psiType
+     * @return
+     */
+    public static boolean isListType(PsiType psiType) {
+        return isSpecifiedType(psiType, LIST_TYPE);
+    }
+
+    /**
+     * 判断是否是java.util.List类型
+     *
+     * @param psiType
+     * @return
+     */
+    public static boolean isSetType(PsiType psiType) {
+        return isSpecifiedType(psiType, SET_TYPE);
+    }
+
+    /**
+     * 判断是否是java.util.Map类型
+     *
+     * @param psiType
+     * @return
+     */
+    public static boolean isMapType(PsiType psiType) {
+        return isSpecifiedType(psiType, MAP_TYPE);
+    }
+
+
+    /**
+     * 判断一个类是否是指定类型子类
+     * @param psiType psiType
+     * @param qualifiedName 全限定名称
+     * @return
+     */
+    public static boolean isSpecifiedType(PsiType psiType, String qualifiedName){
         if (!(psiType instanceof PsiClassType)) {
             return false;
         }
@@ -117,17 +147,17 @@ public class PsiTypeUtils {
         if (OBJECT_TYPE.equals(resolvePsiClass.getQualifiedName())) {
             return false;
         }
-        if (COLLECTION_TYPE.equals(resolvePsiClass.getQualifiedName())) {
+        if (qualifiedName.equals(resolvePsiClass.getQualifiedName())) {
             return true;
         }
-        // 如果父类是Collection类型
         for (PsiType parentPsiType : ((PsiClassType) psiType).rawType().getSuperTypes()) {
-            if (isCollectionType(parentPsiType)) {
+            if (isSpecifiedType(parentPsiType, qualifiedName)) {
                 return true;
             }
         }
         return false;
     }
+
 
     /**
      * 是否是Java官方类库
@@ -138,5 +168,16 @@ public class PsiTypeUtils {
     public static boolean isJavaOfficialType(PsiType psiType) {
         return psiType.getCanonicalText().startsWith("java");
     }
+
+    /**
+     * 如果不是Java官方类库则返回true
+     *
+     * @param psiType
+     * @return
+     */
+    public static boolean isNotJavaOfficialType(PsiType psiType) {
+        return !isJavaOfficialType(psiType);
+    }
+
 
 }
