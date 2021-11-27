@@ -42,7 +42,7 @@
       <keyboard-shortcut keymap="$default" first-keystroke="shift alt P"/>
     </action>
     <action id="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction"
-            class="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction" text="Class To IDL"
+            class="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction" text="Class To Thrift IDL"
             description="Converts the Java class to a IDL string">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
     </action>
