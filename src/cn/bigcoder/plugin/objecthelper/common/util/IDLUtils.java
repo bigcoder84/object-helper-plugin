@@ -20,25 +20,22 @@ public class IDLUtils {
         }
         switch (canonicalText) {
             case STRING_TYPE:
+            case BIG_DECIMAL:
                 return STRING;
+            case BYTE_TYPE:
+                return BYTE;
+            case SHORT_TYPE:
+                return I16;
             case INTEGER_TYPE:
                 return I32;
             case LONG_TYPE:
-                return I64;
-            case SHORT_TYPE:
-                return I16;
-            case BYTE_TYPE:
-                return BYTE;
-            case DOUBLE_TYPE:
-                return DOUBLE;
-            case FLOAT_TYPE:
-                return DOUBLE;
-            case DATE_TYPE:
-                return I64;
             case LOCAL_DATE_TYPE:
-                return I64;
+            case DATE_TYPE:
             case LOCAL_DATE_TIME_TYPE:
                 return I64;
+            case DOUBLE_TYPE:
+            case FLOAT_TYPE:
+                return DOUBLE;
             default:
                 return null;
         }

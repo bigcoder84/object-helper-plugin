@@ -3,6 +3,7 @@ package cn.bigcoder.plugin.objecthelper.generator.idl;
 import cn.bigcoder.plugin.objecthelper.common.util.IDLUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.PsiTypeUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
+import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
 import cn.bigcoder.plugin.objecthelper.generator.Generator;
 import com.intellij.psi.PsiArrayType;
 import com.intellij.psi.PsiClass;
@@ -20,7 +21,7 @@ import java.util.Set;
  * @author: Jindong.Tian
  * @date: 2021-08-20
  **/
-public class IDLGenerator implements Generator {
+public class ThriftIDLGenerator implements Generator {
 
     private PsiClass psiClass;
 
@@ -29,7 +30,7 @@ public class IDLGenerator implements Generator {
      */
     private Set<String> recursiveCache = Sets.newHashSet();
 
-    private IDLGenerator(PsiClass psiClass) {
+    private ThriftIDLGenerator(PsiClass psiClass) {
         this.psiClass = psiClass;
     }
 
@@ -54,7 +55,10 @@ public class IDLGenerator implements Generator {
         StringBuilder code = new StringBuilder();
         for (PsiField allPsiField : allPsiFields) {
             code = processAssociateClass(allPsiField.getType(), code);
-            fields.add(processPsiField(allPsiField));
+            String field = processPsiField(allPsiField);
+            if (StringUtils.isNotEmpty(field)) {
+                fields.add(field);
+            }
         }
         return code.append(generateStructCode(psiClass.getName(), fields));
     }
@@ -179,7 +183,7 @@ public class IDLGenerator implements Generator {
         return null;
     }
 
-    public static IDLGenerator getInstance(PsiClass psiClass) {
-        return new IDLGenerator(psiClass);
+    public static ThriftIDLGenerator getInstance(PsiClass psiClass) {
+        return new ThriftIDLGenerator(psiClass);
     }
 }

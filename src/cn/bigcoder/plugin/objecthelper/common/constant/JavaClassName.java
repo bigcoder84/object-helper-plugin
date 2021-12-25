@@ -15,6 +15,7 @@ public class JavaClassName {
     public static final String DATE_TYPE = "java.util.Date";
     public static final String LOCAL_DATE_TYPE = "java.time.LocalDate";
     public static final String LOCAL_DATE_TIME_TYPE = "java.time.LocalDateTime";
+    public static final String BIG_DECIMAL = "java.math.BigDecimal";
 
     public static final String COLLECTION_TYPE = "java.util.Collection";
     public static final String MAP_TYPE = "java.util.Map";

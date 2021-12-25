@@ -72,7 +72,8 @@ public class PsiTypeUtils {
                 || FLOAT_TYPE.equals(canonicalName)
                 || DATE_TYPE.equals(canonicalName)
                 || LOCAL_DATE_TYPE.equals(canonicalName)
-                || LOCAL_DATE_TIME_TYPE.equals(canonicalName)) {
+                || LOCAL_DATE_TIME_TYPE.equals(canonicalName)
+                || BIG_DECIMAL.equals(canonicalName)) {
             return true;
         }
         return false;

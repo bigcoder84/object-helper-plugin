@@ -1,7 +1,7 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
 import cn.bigcoder.plugin.objecthelper.common.util.NotificationUtils;
-import cn.bigcoder.plugin.objecthelper.generator.idl.IDLGenerator;
+import cn.bigcoder.plugin.objecthelper.generator.idl.ThriftIDLGenerator;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ide.CopyPasteManager;
@@ -17,14 +17,14 @@ import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.setActionInvi
  * @author: Jindong.Tian
  * @date: 2021-08-21
  **/
-public class ClassToIDLAction extends AnAction {
+public class ClassToThriftIDLAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         PsiClass psiClass = getOperatePsiClass(anActionEvent);
         if (psiClass == null) {
             return;
         }
-        String idl = IDLGenerator.getInstance(psiClass).generate();
+        String idl = ThriftIDLGenerator.getInstance(psiClass).generate();
         CopyPasteManager.getInstance().setContents(new StringSelection(idl));
         NotificationUtils.notifyInfo(anActionEvent.getProject(), "IDL代码成功置入剪贴板：<br>" + idl);
     }

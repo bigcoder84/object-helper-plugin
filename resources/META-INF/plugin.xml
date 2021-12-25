@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>cn.bigcoder.plugin.objecthelper</id>
   <name>ObjectHelper</name>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
   <vendor email="bigcoder84@gmail.com" url="https://github.com/bigcoder84/object-helper-plugin">HearingSmile</vendor>
 
   <description><![CDATA[
@@ -15,7 +15,8 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <li>New feature：Added the ability to quickly convert Java classes to IDL</li>
+      <li>Fix:rename "Class To IDL" to "Class To Thrift IDL"</li>
+      <li>Fix bug:fix "Class To Thrift IDL" BigDecimal conversion exception</li>
     ]]>
   </change-notes>
 
@@ -39,12 +40,13 @@
             class="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction" text="Class To JSON"
             description="Converts the Java class to a JSON string">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift alt P"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift alt J"/>
     </action>
-    <action id="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction"
-            class="cn.bigcoder.plugin.objecthelper.action.ClassToIDLAction" text="Class To Thrift IDL"
-            description="Converts the Java class to a IDL string">
+    <action id="cn.bigcoder.plugin.objecthelper.action.ClassToThriftIDLAction"
+            class="cn.bigcoder.plugin.objecthelper.action.ClassToThriftIDLAction" text="Class To Thrift IDL"
+            description="Converts the Java class to a Thrift IDL string">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift alt I"/>
     </action>
   </actions>
 
