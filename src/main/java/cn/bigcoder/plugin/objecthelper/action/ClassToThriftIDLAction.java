@@ -1,6 +1,7 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
 import cn.bigcoder.plugin.objecthelper.common.util.NotificationUtils;
+import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.idl.ThriftIDLGenerator;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -26,13 +27,15 @@ public class ClassToThriftIDLAction extends AnAction {
         }
         String idl = ThriftIDLGenerator.getInstance(psiClass).generate();
         CopyPasteManager.getInstance().setContents(new StringSelection(idl));
-        NotificationUtils.notifyInfo(anActionEvent.getProject(), "IDL代码成功置入剪贴板：<br>" + idl);
+        NotificationUtils.notifyInfo(anActionEvent.getProject(), "Thrift IDL代码成功置入剪贴板：<br>" + idl);
     }
 
     @Override
     public void update(@NotNull AnActionEvent anActionEvent) {
-        // 如果当前光标不在方法中，则不显示ConvertToJson组件
-        if (getOperatePsiClass(anActionEvent) == null) {
+        if (!PluginConfigState.getInstance().isThriftSwitch()) {
+            setActionInvisible(anActionEvent);
+        } else if (getOperatePsiClass(anActionEvent) == null) {
+            // 如果当前光标不在类名上，则不显示ConvertToJson组件
             setActionInvisible(anActionEvent);
         }
         super.update(anActionEvent);
