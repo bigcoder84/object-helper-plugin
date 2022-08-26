@@ -1,7 +1,7 @@
 package cn.bigcoder.plugin.objecthelper.common.util;
 
-import static cn.bigcoder.plugin.objecthelper.common.constant.JavaClassName.*;
 import static cn.bigcoder.plugin.objecthelper.common.constant.IDLTypeName.*;
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaClassName.*;
 
 /**
  * @author: Jindong.Tian

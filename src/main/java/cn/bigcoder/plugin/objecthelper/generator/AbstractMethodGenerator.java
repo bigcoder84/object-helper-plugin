@@ -1,4 +1,4 @@
-package cn.bigcoder.plugin.objecthelper.generator.method;
+package cn.bigcoder.plugin.objecthelper.generator;
 
 import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
@@ -49,7 +49,7 @@ public abstract class AbstractMethodGenerator implements Generator {
      * 生成方法体
      * @return
      */
-    abstract String generateMethodBody();
+    protected abstract String generateMethodBody();
 
     /**
      * 检查是否具备生成方法所需要的环境

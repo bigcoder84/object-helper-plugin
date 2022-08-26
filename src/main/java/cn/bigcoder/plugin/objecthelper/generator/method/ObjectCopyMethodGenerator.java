@@ -2,7 +2,13 @@ package cn.bigcoder.plugin.objecthelper.generator.method;
 
 import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
-import com.intellij.psi.*;
+import cn.bigcoder.plugin.objecthelper.generator.AbstractMethodGenerator;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiField;
+import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifier;
+import com.intellij.psi.PsiModifierList;
+import com.intellij.psi.PsiParameter;
 import org.jetbrains.annotations.NotNull;
 
 import static cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord.*;
