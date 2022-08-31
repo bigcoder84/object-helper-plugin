@@ -1,6 +1,7 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
 import cn.bigcoder.plugin.objecthelper.common.util.NotificationUtils;
+import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.idl.ThriftIDLGenerator;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -31,8 +32,10 @@ public class ClassToThriftIDLAction extends AnAction {
 
     @Override
     public void update(@NotNull AnActionEvent anActionEvent) {
-        // 如果当前光标不在方法中，则不显示ConvertToJson组件
-        if (getOperatePsiClass(anActionEvent) == null) {
+        if (!PluginConfigState.getInstance().isThriftSwitch()) {
+            setActionInvisible(anActionEvent);
+        } else if (getOperatePsiClass(anActionEvent) == null) {
+            // 如果当前光标不在方法中，则不显示ConvertToJson组件
             setActionInvisible(anActionEvent);
         }
         super.update(anActionEvent);

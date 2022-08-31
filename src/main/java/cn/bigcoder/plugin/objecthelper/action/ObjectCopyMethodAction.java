@@ -59,8 +59,8 @@ public class ObjectCopyMethodAction extends AnAction {
      */
     private boolean check(PsiMethod psiMethod) {
         if (psiMethod == null
-                || PsiUtils.getPsiParameters(psiMethod).size() == 0
-                || VOID.equals(PsiUtils.getMethodReturnClassName(psiMethod))) {
+            || PsiUtils.getPsiParameters(psiMethod).size() == 0
+            || VOID.equals(PsiUtils.getMethodReturnClassName(psiMethod))) {
             return false;
         }
         return true;

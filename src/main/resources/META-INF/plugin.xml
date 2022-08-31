@@ -30,6 +30,11 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <!-- 配置 File -> Settings -> Tools -->
+    <applicationConfigurable groupId="tools" displayName="Object Helper" id="cn.bigcoder.plugin.objecthelper.config.ObjectHelperConfigurable"
+                         instance="cn.bigcoder.plugin.objecthelper.config.ObjectHelperConfigurable"/>
+    <applicationService
+      serviceImplementation="cn.bigcoder.plugin.objecthelper.config.PluginConfigModel"/>
   </extensions>
 
   <actions>
