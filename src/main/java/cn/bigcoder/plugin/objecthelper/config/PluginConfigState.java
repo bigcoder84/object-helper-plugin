@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
  * @date: 2022-08-31
  **/
 @State(
-    name = "cn.bigcoder.plugin.objecthelper.config.PluginConfigState",
-    storages = @Storage("object-helper.xml")
+        name = "cn.bigcoder.plugin.objecthelper.config.PluginConfigState",
+        storages = @Storage("object-helper.xml")
 )
 public class PluginConfigState implements PersistentStateComponent<PluginConfigModel> {
 

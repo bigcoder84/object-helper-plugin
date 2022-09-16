@@ -19,6 +19,10 @@ public class PluginConfigModel {
      * 是否开启 Class To XML 功能，默认为开启状态
      */
     private boolean xmlSwitch = true;
+    /**
+     * 是否开启 Object Copy Method 功能，默认为开启状态
+     */
+    private boolean objectCopySwitch = true;
 
     public boolean isJsonSwitch() {
         return jsonSwitch;
@@ -44,16 +48,24 @@ public class PluginConfigModel {
         this.xmlSwitch = xmlSwitch;
     }
 
+    public boolean isObjectCopySwitch() {
+        return objectCopySwitch;
+    }
+
+    public void setObjectCopySwitch(boolean objectCopySwitch) {
+        this.objectCopySwitch = objectCopySwitch;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PluginConfigModel that = (PluginConfigModel) o;
-        return jsonSwitch == that.jsonSwitch && thriftSwitch == that.thriftSwitch && xmlSwitch == that.xmlSwitch;
+        return jsonSwitch == that.jsonSwitch && thriftSwitch == that.thriftSwitch && xmlSwitch == that.xmlSwitch && objectCopySwitch == that.objectCopySwitch;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jsonSwitch, thriftSwitch, xmlSwitch);
+        return Objects.hash(jsonSwitch, thriftSwitch, xmlSwitch, objectCopySwitch);
     }
 }

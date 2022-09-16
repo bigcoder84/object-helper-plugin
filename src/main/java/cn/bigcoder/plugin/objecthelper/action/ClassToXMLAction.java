@@ -36,7 +36,7 @@ public class ClassToXMLAction extends AnAction {
         if (!PluginConfigState.getInstance().isXmlSwitch()) {
             setActionInvisible(anActionEvent);
         } else if (getOperatePsiClass(anActionEvent) == null) {
-            // 如果当前光标不在方法中，则不显示ConvertToJson组件
+            // 如果当前光标不在类名上，则不显示ConvertToJson组件
             setActionInvisible(anActionEvent);
         }
         super.update(anActionEvent);

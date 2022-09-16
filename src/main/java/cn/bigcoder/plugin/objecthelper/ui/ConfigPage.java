@@ -10,10 +10,14 @@ import javax.swing.*;
  * @date: 2022-08-26
  **/
 public class ConfigPage {
+
+    private static final String OPEN_STATUS = "open";
+
     private JPanel mainPanel;
     private JComboBox classToJsonSwitch;
     private JComboBox classToThriftSwitch;
     private JComboBox classToXmlSwitch;
+    private JComboBox objectCopyMethodSwitch;
 
     public JPanel getMainPanel() {
         initField();
@@ -28,6 +32,7 @@ public class ConfigPage {
         this.classToJsonSwitch.setSelectedItem(convertComboBoxItem(instance.isJsonSwitch()));
         this.classToThriftSwitch.setSelectedItem(convertComboBoxItem(instance.isThriftSwitch()));
         this.classToXmlSwitch.setSelectedItem(convertComboBoxItem(instance.isXmlSwitch()));
+        this.objectCopyMethodSwitch.setSelectedItem(convertComboBoxItem(instance.isObjectCopySwitch()));
     }
 
     /**
@@ -37,9 +42,10 @@ public class ConfigPage {
      */
     public PluginConfigModel getCurrentConfigModel() {
         PluginConfigModel pluginConfigModel = new PluginConfigModel();
-        pluginConfigModel.setJsonSwitch(this.classToJsonSwitch.getSelectedItem().equals("open"));
-        pluginConfigModel.setThriftSwitch(this.classToThriftSwitch.getSelectedItem().equals("open"));
-        pluginConfigModel.setXmlSwitch(this.classToXmlSwitch.getSelectedItem().equals("open"));
+        pluginConfigModel.setJsonSwitch(this.classToJsonSwitch.getSelectedItem().equals(OPEN_STATUS));
+        pluginConfigModel.setThriftSwitch(this.classToThriftSwitch.getSelectedItem().equals(OPEN_STATUS));
+        pluginConfigModel.setXmlSwitch(this.classToXmlSwitch.getSelectedItem().equals(OPEN_STATUS));
+        pluginConfigModel.setObjectCopySwitch(this.objectCopyMethodSwitch.getSelectedItem().equals(OPEN_STATUS));
         return pluginConfigModel;
     }
 

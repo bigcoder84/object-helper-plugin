@@ -2,7 +2,6 @@ package cn.bigcoder.plugin.objecthelper.generator.xml;
 
 import cn.bigcoder.plugin.objecthelper.common.util.XMLUtils;
 import cn.bigcoder.plugin.objecthelper.generator.AbstractDataObjectGenerator;
-import com.google.gson.Gson;
 import com.intellij.psi.PsiClass;
 
 import java.util.Map;

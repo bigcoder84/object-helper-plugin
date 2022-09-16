@@ -47,6 +47,7 @@ public class ObjectHelperConfigurable implements SearchableConfigurable {
         instance.setJsonSwitch(currentConfigModel.isJsonSwitch());
         instance.setThriftSwitch(currentConfigModel.isThriftSwitch());
         instance.setXmlSwitch(currentConfigModel.isXmlSwitch());
+        instance.setObjectCopySwitch(currentConfigModel.isObjectCopySwitch());
     }
 
 }

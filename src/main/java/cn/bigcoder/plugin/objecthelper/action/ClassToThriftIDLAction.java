@@ -27,7 +27,7 @@ public class ClassToThriftIDLAction extends AnAction {
         }
         String idl = ThriftIDLGenerator.getInstance(psiClass).generate();
         CopyPasteManager.getInstance().setContents(new StringSelection(idl));
-        NotificationUtils.notifyInfo(anActionEvent.getProject(), "IDL代码成功置入剪贴板：<br>" + idl);
+        NotificationUtils.notifyInfo(anActionEvent.getProject(), "Thrift IDL代码成功置入剪贴板：<br>" + idl);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ClassToThriftIDLAction extends AnAction {
         if (!PluginConfigState.getInstance().isThriftSwitch()) {
             setActionInvisible(anActionEvent);
         } else if (getOperatePsiClass(anActionEvent) == null) {
-            // 如果当前光标不在方法中，则不显示ConvertToJson组件
+            // 如果当前光标不在类名上，则不显示ConvertToJson组件
             setActionInvisible(anActionEvent);
         }
         super.update(anActionEvent);
