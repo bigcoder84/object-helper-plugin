@@ -27,7 +27,7 @@ public class ClassToJsonAction extends AnAction {
         }
         String json = getGenerator(psiClass).generate();
         CopyPasteManager.getInstance().setContents(new StringSelection(json));
-        NotificationUtils.notifyInfo(anAction.getProject(), "JSON字符串成功置入剪贴板：<br>" + json);
+        NotificationUtils.notifyInfo(anAction.getProject(), "JSON字符串成功置入剪贴板:<br>" + json);
     }
 
     @Override

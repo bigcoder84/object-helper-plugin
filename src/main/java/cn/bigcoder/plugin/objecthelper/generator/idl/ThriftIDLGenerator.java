@@ -12,10 +12,10 @@ import com.intellij.psi.PsiType;
 import com.intellij.psi.impl.source.PsiClassReferenceType;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.compress.utils.Sets;
-import org.apache.commons.lang.ArrayUtils;
 
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author: Jindong.Tian

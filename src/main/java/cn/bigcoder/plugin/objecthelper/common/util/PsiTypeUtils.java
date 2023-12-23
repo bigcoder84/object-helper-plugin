@@ -4,12 +4,12 @@ import com.intellij.psi.PsiArrayType;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiType;
-import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import static cn.bigcoder.plugin.objecthelper.common.constant.JavaClassName.*;
 
