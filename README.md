@@ -44,7 +44,7 @@ File->Settings->Tools->Object Helper 即可进入插件的配置页面
 - `generate field mode = target` 代表以方法返回类型的字段为基础生成对象拷贝；
 `generate field mode = source` 代表以方法入参类型的字段为基础生成对象拷贝。
 
-- `non-existent field generate annotation = yes` 代表当目标字段，在源对象中不存在时，是否以注释的形式生成代码，如果为 `no`，则代表不生成这一个字段拷贝代码。
+- `non-existent field generate annotation = yes` 代表当目标字段在源对象中不存在时，是否以注释的形式生成代码，如果为 `no`，则代表不生成这一个字段拷贝代码。
 
 ## 未来功能支持计划
 
