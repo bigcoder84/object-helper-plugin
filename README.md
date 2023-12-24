@@ -5,7 +5,7 @@
 </div>
 <br/>
 <div align="center">
-	<img src="https://img.shields.io/badge/version-v1.3.0-blue">
+	<img src="https://img.shields.io/badge/version-v1.3.1-blue">
 	<img src="https://img.shields.io/badge/license-Apache%202-red">
 	<img src="https://img.shields.io/badge/size-600%20kB-yellowgreen">
 	<img src="https://img.shields.io/badge/downloads-3.1k-green">
