@@ -1,7 +1,10 @@
 package cn.bigcoder.plugin.objecthelper.generator.method;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.FieldGenerateModeEnum;
+import cn.bigcoder.plugin.objecthelper.common.enums.WhetherEnum;
 import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
+import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.AbstractMethodGenerator;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
@@ -9,6 +12,10 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.PsiParameter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 
 import static cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord.*;
@@ -60,16 +67,33 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
         StringBuilder result = new StringBuilder();
         result.append(generateNullCheck());
         result.append(generateObjectCreateLine());
-        for (PsiField field : PsiUtils.getAllPsiFields(getFirstParameterClass())) {
-            PsiModifierList modifierList = field.getModifierList();
-            if (modifierList == null ||
-                    modifierList.hasModifierProperty(PsiModifier.STATIC) ||
-                    modifierList.hasModifierProperty(PsiModifier.FINAL) ||
-                    modifierList.hasModifierProperty(PsiModifier.SYNCHRONIZED)) {
+        FieldGenerateModeEnum generateModeEnum = PluginConfigState.getInstance()
+            .getObjectCopyMethodFieldGenerateMode();
+        // mainClass 代表以哪个类字段为基础生成字段拷贝代码
+        PsiClass mainClass = getReturnClass();
+        PsiClass secondClass = getFirstParameterClass();
+        if (generateModeEnum == FieldGenerateModeEnum.SOURCE) {
+            mainClass = getFirstParameterClass();
+            secondClass = getReturnClass();
+        }
+
+        Set<String> secondFieldNames = PsiUtils.getAllPsiFields(secondClass).stream().filter(e -> PsiUtils.isMemberField(e))
+            .map(PsiField::getName).collect(Collectors.toSet());
+
+        List<String> annotationLine = new LinkedList<>();
+        for (PsiField field : PsiUtils.getAllPsiFields(mainClass)) {
+            if (!PsiUtils.isMemberField(field)) {
                 continue;
             }
-            result.append(generateFieldCopyLine(field));
+            if (secondFieldNames.contains(field.getName())) {
+                result.append(generateFieldCopyLine(field));
+            } else if (PluginConfigState.getInstance().getObjectCopyMethodFieldGenerateAnnotation()
+                == WhetherEnum.YES) {
+                // 如果源对象没有该字段，且开启了以注释模式生成代码的开关，则生成注释
+                annotationLine.add("// "+ generateFieldCopyLine(field));
+            }
         }
+        annotationLine.forEach(result::append);
         result.append(generateReturnLine());
         return result.toString();
     }
@@ -123,6 +147,7 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
         return getParameters().get(FIRST_INDEX);
     }
 
+
     /**
      * 获取参数列表第一个参数的{@code PsiClass}
      *
@@ -130,5 +155,9 @@ public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
      */
     private PsiClass getFirstParameterClass() {
         return getPsiClass(getFirstParameter().getType(), project);
+    }
+
+    private PsiClass getReturnClass() {
+        return getPsiClass(getReturnType(), project);
     }
 }

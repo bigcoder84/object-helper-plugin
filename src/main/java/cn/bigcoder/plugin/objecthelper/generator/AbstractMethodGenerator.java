@@ -6,6 +6,7 @@ import cn.bigcoder.plugin.objecthelper.generator.Generator;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiParameter;
+import com.intellij.psi.PsiType;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
@@ -65,5 +66,9 @@ public abstract class AbstractMethodGenerator implements Generator {
 
     protected List<PsiParameter> getParameters() {
         return getPsiParameters(psiMethod);
+    }
+
+    protected PsiType getReturnType() {
+        return psiMethod.getReturnType();
     }
 }

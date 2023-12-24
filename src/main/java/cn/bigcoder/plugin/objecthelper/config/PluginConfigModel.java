@@ -1,5 +1,8 @@
 package cn.bigcoder.plugin.objecthelper.config;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.FieldGenerateModeEnum;
+import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
+import cn.bigcoder.plugin.objecthelper.common.enums.WhetherEnum;
 import java.util.Objects;
 
 /**
@@ -7,65 +10,101 @@ import java.util.Objects;
  * @date: 2022-08-31
  **/
 public class PluginConfigModel {
+
     /**
      * 是否开启 Class To Json 功能，默认为开启状态
      */
-    private boolean jsonSwitch = true;
+    private FunctionSwitchEnum jsonSwitch = FunctionSwitchEnum.OPEN;
     /**
      * 是否开启 Class To Thrift IDL 功能，默认为开启状态
      */
-    private boolean thriftSwitch = true;
+    private FunctionSwitchEnum thriftSwitch = FunctionSwitchEnum.OPEN;
     /**
      * 是否开启 Class To XML 功能，默认为开启状态
      */
-    private boolean xmlSwitch = true;
+    private FunctionSwitchEnum xmlSwitch = FunctionSwitchEnum.OPEN;
     /**
      * 是否开启 Object Copy Method 功能，默认为开启状态
      */
-    private boolean objectCopySwitch = true;
+    private FunctionSwitchEnum objectCopySwitch = FunctionSwitchEnum.OPEN;
+    /**
+     * Object Copy Method 功能中，以Source/Target对象为基础生成字段拷贝
+     */
+    private FieldGenerateModeEnum objectCopyMethodFieldGenerateMode = FieldGenerateModeEnum.TARGET;
 
-    public boolean isJsonSwitch() {
+    /**
+     * Object Copy Method 功能中，Source 和 Target 对象之间差异的字段，是否以代码注释的形式生成代码
+     */
+    private WhetherEnum objectCopyMethodFieldGenerateAnnotation = WhetherEnum.YES;
+
+    public FunctionSwitchEnum getJsonSwitch() {
         return jsonSwitch;
     }
 
-    public void setJsonSwitch(boolean jsonSwitch) {
+    public void setJsonSwitch(FunctionSwitchEnum jsonSwitch) {
         this.jsonSwitch = jsonSwitch;
     }
 
-    public boolean isThriftSwitch() {
+    public FunctionSwitchEnum getThriftSwitch() {
         return thriftSwitch;
     }
 
-    public void setThriftSwitch(boolean thriftSwitch) {
+    public void setThriftSwitch(FunctionSwitchEnum thriftSwitch) {
         this.thriftSwitch = thriftSwitch;
     }
 
-    public boolean isXmlSwitch() {
+    public FunctionSwitchEnum getXmlSwitch() {
         return xmlSwitch;
     }
 
-    public void setXmlSwitch(boolean xmlSwitch) {
+    public void setXmlSwitch(FunctionSwitchEnum xmlSwitch) {
         this.xmlSwitch = xmlSwitch;
     }
 
-    public boolean isObjectCopySwitch() {
+    public FunctionSwitchEnum getObjectCopySwitch() {
         return objectCopySwitch;
     }
 
-    public void setObjectCopySwitch(boolean objectCopySwitch) {
+    public void setObjectCopySwitch(FunctionSwitchEnum objectCopySwitch) {
         this.objectCopySwitch = objectCopySwitch;
+    }
+
+    public FieldGenerateModeEnum getObjectCopyMethodFieldGenerateMode() {
+        return objectCopyMethodFieldGenerateMode;
+    }
+
+    public void setObjectCopyMethodFieldGenerateMode(
+        FieldGenerateModeEnum objectCopyMethodFieldGenerateMode) {
+        this.objectCopyMethodFieldGenerateMode = objectCopyMethodFieldGenerateMode;
+    }
+
+    public WhetherEnum getObjectCopyMethodFieldGenerateAnnotation() {
+        return objectCopyMethodFieldGenerateAnnotation;
+    }
+
+    public void setObjectCopyMethodFieldGenerateAnnotation(
+        WhetherEnum objectCopyMethodFieldGenerateAnnotation) {
+        this.objectCopyMethodFieldGenerateAnnotation = objectCopyMethodFieldGenerateAnnotation;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PluginConfigModel that = (PluginConfigModel) o;
-        return jsonSwitch == that.jsonSwitch && thriftSwitch == that.thriftSwitch && xmlSwitch == that.xmlSwitch && objectCopySwitch == that.objectCopySwitch;
+        return jsonSwitch == that.jsonSwitch && thriftSwitch == that.thriftSwitch && xmlSwitch == that.xmlSwitch
+            && objectCopySwitch == that.objectCopySwitch
+            && objectCopyMethodFieldGenerateMode == that.objectCopyMethodFieldGenerateMode
+            && objectCopyMethodFieldGenerateAnnotation == that.objectCopyMethodFieldGenerateAnnotation;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jsonSwitch, thriftSwitch, xmlSwitch, objectCopySwitch);
+        return Objects.hash(jsonSwitch, thriftSwitch, xmlSwitch, objectCopySwitch, objectCopyMethodFieldGenerateMode,
+            objectCopyMethodFieldGenerateAnnotation);
     }
 }

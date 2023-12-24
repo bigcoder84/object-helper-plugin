@@ -46,6 +46,9 @@ public class ThriftIDLGenerator implements Generator {
      * @return
      */
     private StringBuilder generateStructCode(PsiClass psiClass) {
+        if (psiClass == null) {
+            return new StringBuilder();
+        }
         if (recursiveCache.contains(psiClass.getQualifiedName())) {
             return new StringBuilder();
         }

@@ -8,15 +8,22 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
-    <colspec value="left:70dlu:noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <colspec value="left:129dlu:noGrow"/>
+    <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <constraints>
-      <xy x="16" y="18" width="500" height="339"/>
+      <xy x="16" y="18" width="658" height="534"/>
     </constraints>
     <properties/>
-    <border type="none"/>
+    <border type="none" title="kjm"/>
     <children>
       <component id="f55a3" class="javax.swing.JLabel">
         <constraints>
@@ -47,7 +54,7 @@
       </component>
       <component id="fbfcf" class="javax.swing.JComboBox" binding="classToJsonSwitch">
         <constraints>
-          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -60,7 +67,7 @@
       </component>
       <component id="7ee68" class="javax.swing.JComboBox" binding="classToThriftSwitch">
         <constraints>
-          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -72,7 +79,7 @@
       </component>
       <component id="4de74" class="javax.swing.JComboBox" binding="classToXmlSwitch">
         <constraints>
-          <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -93,7 +100,7 @@
       </component>
       <component id="70a37" class="javax.swing.JComboBox" binding="objectCopyMethodSwitch">
         <constraints>
-          <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
@@ -101,6 +108,77 @@
             <item value="open"/>
             <item value="close"/>
           </model>
+        </properties>
+      </component>
+      <component id="cec34" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <text value="switch"/>
+        </properties>
+      </component>
+      <component id="7f63" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <text value="generate field mode"/>
+        </properties>
+      </component>
+      <component id="29224" class="javax.swing.JComboBox" binding="objectCopyMethodGenerateMode">
+        <constraints>
+          <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="source"/>
+            <item value="target"/>
+          </model>
+        </properties>
+      </component>
+      <component id="9e6fa" class="javax.swing.JButton" binding="tipsButton" default-binding="true">
+        <constraints>
+          <grid row="10" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Tips"/>
+          <toolTipText value="If the converted source object and target object fields are not exactly the same, the generated conversion code is based on the source object or the target object"/>
+        </properties>
+      </component>
+      <component id="f42e" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <text value="non-existent field generate annotation"/>
+        </properties>
+      </component>
+      <component id="b4add" class="javax.swing.JComboBox" binding="objectCopyMethodGenerateAnnotation">
+        <constraints>
+          <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="yes"/>
+            <item value="no"/>
+          </model>
+        </properties>
+      </component>
+      <component id="d87eb" class="javax.swing.JButton" default-binding="true">
+        <constraints>
+          <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false" defaultalign-vert="false"/>
+        </constraints>
+        <properties>
+          <text value="Tips"/>
+          <toolTipText value="If the converted source object and target object fields are not identical, the non-existent fields are generated in the form of code annotation"/>
         </properties>
       </component>
     </children>

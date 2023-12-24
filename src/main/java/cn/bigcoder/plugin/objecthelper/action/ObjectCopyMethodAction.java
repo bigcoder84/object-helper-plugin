@@ -1,23 +1,20 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
 import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
 import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.Generator;
 import cn.bigcoder.plugin.objecthelper.generator.method.ObjectCopyMethodGenerator;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiMethod;
-import org.jetbrains.annotations.NotNull;
 
 import static cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord.VOID;
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getOperatePsiClass;
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.setActionInvisible;
 
-public class ObjectCopyMethodAction extends AnAction {
+public class ObjectCopyMethodAction extends AbstractClassAnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -27,14 +24,9 @@ public class ObjectCopyMethodAction extends AnAction {
     }
 
     @Override
-    public void update(@NotNull AnActionEvent anActionEvent) {
-        if (!PluginConfigState.getInstance().isObjectCopySwitch()) {
-            PsiUtils.setActionDisabled(anActionEvent);
-        } else if (!check(PsiUtils.getCursorPsiMethod(anActionEvent))) {
-            // 如果当前光标不在方法中，则不显示Object Copy组件
-            PsiUtils.setActionDisabled(anActionEvent);
-        }
-        super.update(anActionEvent);
+    public boolean actionShow(AnActionEvent anActionEvent) {
+        return PluginConfigState.getInstance().getObjectCopySwitch() == FunctionSwitchEnum.OPEN
+            && check(PsiUtils.getCursorPsiMethod(anActionEvent));
     }
 
     private void generateO2O(PsiMethod psiMethod) {
@@ -64,7 +56,7 @@ public class ObjectCopyMethodAction extends AnAction {
      */
     private boolean check(PsiMethod psiMethod) {
         if (psiMethod == null
-            || PsiUtils.getPsiParameters(psiMethod).size() == 0
+            || PsiUtils.getPsiParameters(psiMethod).isEmpty()
             || VOID.equals(PsiUtils.getMethodReturnClassName(psiMethod))) {
             return false;
         }

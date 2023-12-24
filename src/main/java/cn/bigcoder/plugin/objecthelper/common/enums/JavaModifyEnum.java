@@ -4,7 +4,7 @@ package cn.bigcoder.plugin.objecthelper.common.enums;
  * @author: Jindong.Tian
  * @date: 2021-01-09
  **/
-public enum JavaModify {
+public enum JavaModifyEnum {
     PUBLIC("public", 1),
     PROTECTED("protected", 1),
     PRIVATE("private", 1),
@@ -14,7 +14,7 @@ public enum JavaModify {
     private String name;
     private Integer priority;
 
-    JavaModify(String name, Integer priority) {
+    JavaModifyEnum(String name, Integer priority) {
         this.name = name;
         this.priority = priority;
     }
@@ -23,11 +23,11 @@ public enum JavaModify {
         return name;
     }
 
-    public JavaModify nameOf(String modify){
+    public JavaModifyEnum nameOf(String modify){
         if (modify == null){
             return null;
         }
-        for (JavaModify item : values()) {
+        for (JavaModifyEnum item : values()) {
             if (modify.equals(item.getName())){
                 return item;
             }
