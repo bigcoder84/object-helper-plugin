@@ -9,15 +9,41 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import static cn.bigcoder.plugin.objecthelper.common.constant.JavaClassName.*;
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaClassName.BASE_BYTE_TYPE;
 
 /**
  * @author: Jindong.Tian
  * @date: 2021-02-12
  **/
 public class PsiTypeUtils {
+
+    private static final Set<String> DATA_TYPES;
+
+    static {
+        DATA_TYPES = new HashSet<>();
+        DATA_TYPES.add(STRING_TYPE);
+        DATA_TYPES.add(INTEGER_TYPE);
+        DATA_TYPES.add(BASE_INT_TYPE);
+        DATA_TYPES.add(LONG_TYPE);
+        DATA_TYPES.add(BASE_LONG_TYPE);
+        DATA_TYPES.add(SHORT_TYPE);
+        DATA_TYPES.add(BASE_SHORT_TYPE);
+        DATA_TYPES.add(BYTE_TYPE);
+        DATA_TYPES.add(BASE_BYTE_TYPE);
+        DATA_TYPES.add(DOUBLE_TYPE);
+        DATA_TYPES.add(BASE_DOUBLE_TYPE);
+        DATA_TYPES.add(FLOAT_TYPE);
+        DATA_TYPES.add(BASE_FLOAT_TYPE);
+        DATA_TYPES.add(DATE_TYPE);
+        DATA_TYPES.add(LOCAL_DATE_TYPE);
+        DATA_TYPES.add(LOCAL_DATE_TIME_TYPE);
+        DATA_TYPES.add(BIG_DECIMAL);
+    }
 
     /**
      * 获取数据类型的默认值
@@ -33,17 +59,23 @@ public class PsiTypeUtils {
             case STRING_TYPE:
                 return "";
             case INTEGER_TYPE:
+            case BASE_INT_TYPE:
                 return 1;
             case LONG_TYPE:
+            case BASE_LONG_TYPE:
                 return 1L;
             case SHORT_TYPE:
+            case BASE_SHORT_TYPE:
                 return (short) 1;
             case BYTE_TYPE:
+            case BASE_BYTE_TYPE:
                 return (byte) 1;
             case DOUBLE_TYPE:
-                return 1.0;
+            case BASE_DOUBLE_TYPE:
+                return 1.1;
             case FLOAT_TYPE:
-                return 1.0f;
+            case BASE_FLOAT_TYPE:
+                return 1.1f;
             case DATE_TYPE:
                 return DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
             case LOCAL_DATE_TYPE:
@@ -62,21 +94,7 @@ public class PsiTypeUtils {
      * @return
      */
     public static boolean isDataType(PsiType psiType) {
-        String canonicalName = psiType.getCanonicalText();
-        if (STRING_TYPE.equals(canonicalName)
-                || INTEGER_TYPE.equals(canonicalName)
-                || LONG_TYPE.equals(canonicalName)
-                || SHORT_TYPE.equals(canonicalName)
-                || BYTE_TYPE.equals(canonicalName)
-                || DOUBLE_TYPE.equals(canonicalName)
-                || FLOAT_TYPE.equals(canonicalName)
-                || DATE_TYPE.equals(canonicalName)
-                || LOCAL_DATE_TYPE.equals(canonicalName)
-                || LOCAL_DATE_TIME_TYPE.equals(canonicalName)
-                || BIG_DECIMAL.equals(canonicalName)) {
-            return true;
-        }
-        return false;
+        return DATA_TYPES.contains(psiType.getCanonicalText());
     }
 
     /**
@@ -132,11 +150,12 @@ public class PsiTypeUtils {
 
     /**
      * 判断一个类是否是指定类型子类
-     * @param psiType psiType
+     *
+     * @param psiType       psiType
      * @param qualifiedName 全限定名称
      * @return
      */
-    public static boolean isSpecifiedType(PsiType psiType, String qualifiedName){
+    public static boolean isSpecifiedType(PsiType psiType, String qualifiedName) {
         if (!(psiType instanceof PsiClassType)) {
             return false;
         }

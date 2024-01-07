@@ -8,7 +8,7 @@
 	<img src="https://img.shields.io/badge/version-v1.3.2-blue">
 	<img src="https://img.shields.io/badge/license-Apache%202-red">
 	<img src="https://img.shields.io/badge/size-3.96%20MB-yellowgreen">
-	<img src="https://img.shields.io/badge/downloads-3.1k-green">
+	<img src="https://img.shields.io/badge/download-3.2k-green">
 </div>
 
 JetBrains Intellij IDEA ObjectHelper 插件旨在减少开发者重复低效的劳动，使开发者能够更专注于业务逻辑的开发。
