@@ -54,7 +54,7 @@ object-helper插件未来功能支持计划：
 - [x] Class 转 XML（Class To XML）
 - [x] 个性化配置
 - [ ] Object Copy Method 功能支持 Lambda 表达式
-- [ ] JSON 转 Class（JSON TO Class）
-- [ ] Class 转 Protobuf IDL（JSON TO Class）
+- [ ] JSON 转 Class（JSON To Class）
+- [ ] Class 转 Protobuf IDL（JSON To Class）
 - [ ] All Setter
 - [ ] 菜单分组显示
