@@ -5,10 +5,10 @@
 </div>
 <br/>
 <div align="center">
-	<img src="https://img.shields.io/badge/version-v1.3.1-blue">
+	<img src="https://img.shields.io/badge/version-v1.3.2-blue">
 	<img src="https://img.shields.io/badge/license-Apache%202-red">
-	<img src="https://img.shields.io/badge/size-600%20kB-yellowgreen">
-	<img src="https://img.shields.io/badge/downloads-3.1k-green">
+	<img src="https://img.shields.io/badge/size-3.96%20MB-yellowgreen">
+	<img src="https://img.shields.io/badge/download-3.2k-green">
 </div>
 
 JetBrains Intellij IDEA ObjectHelper 插件旨在减少开发者重复低效的劳动，使开发者能够更专注于业务逻辑的开发。
@@ -25,7 +25,7 @@ JetBrains Intellij IDEA ObjectHelper 插件旨在减少开发者重复低效的�
 
 - Java类转JSON
 
-  ![](https://image.bigcoder.cn/20210227223302.gif)
+  ![](https://image.bigcoder.cn/20231224171155.gif)
 
 - Java类转Thrift IDL
 
@@ -33,22 +33,28 @@ JetBrains Intellij IDEA ObjectHelper 插件旨在减少开发者重复低效的�
 
 - Java类转XML
 
-  ![](https://image.bigcoder.cn/20220916170144.gif)
+  ![](https://image.bigcoder.cn/20231224171113.gif)
 
 - 插件配置
 
 File->Settings->Tools->Object Helper 即可进入插件的配置页面
 
-![](https://image.bigcoder.cn/20220916173227.png)
+![](https://image.bigcoder.cn/20231224170305.png)
+
+- `generate field mode = target` 代表以方法返回类型的字段为基础生成对象拷贝；
+`generate field mode = source` 代表以方法入参类型的字段为基础生成对象拷贝。
+
+- `non-existent field generate annotation = yes` 代表当目标字段在源对象中不存在时，是否以注释的形式生成代码，如果为 `no`，则代表不生成这一个字段拷贝代码。
 
 ## 未来功能支持计划
 
 object-helper插件未来功能支持计划：
 
-- [x] Class转IDL（Class To Thrift IDL）
-- [x] Class转XML（Class To XML）
+- [x] Class 转 IDL（Class To Thrift IDL）
+- [x] Class 转 XML（Class To XML）
 - [x] 个性化配置
-- [ ] JSON转Class（JSON TO Class）
-- [ ] Class转Protobuf IDL（JSON TO Class）
+- [ ] Object Copy Method 功能支持 Lambda 表达式
+- [ ] JSON 转 Class（JSON To Class）
+- [ ] Class 转 Protobuf IDL（JSON To Class）
 - [ ] All Setter
 - [ ] 菜单分组显示

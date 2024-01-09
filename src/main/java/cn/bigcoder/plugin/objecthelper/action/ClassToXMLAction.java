@@ -1,24 +1,21 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
 import cn.bigcoder.plugin.objecthelper.common.util.NotificationUtils;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.Generator;
-import cn.bigcoder.plugin.objecthelper.generator.json.ClassJsonGenerator;
 import cn.bigcoder.plugin.objecthelper.generator.xml.ClassXMLGenerator;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.psi.PsiClass;
+
+import groovy.json.StringEscapeUtils;
+import java.awt.datatransfer.StringSelection;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.datatransfer.StringSelection;
-
 import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getOperatePsiClass;
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.setActionInvisible;
 
-public class ClassToXMLAction extends AnAction {
+public class ClassToXMLAction extends AbstractClassAnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anAction) {
@@ -26,20 +23,15 @@ public class ClassToXMLAction extends AnAction {
         if (psiClass == null) {
             return;
         }
-        String json = getGenerator(psiClass).generate();
-        CopyPasteManager.getInstance().setContents(new StringSelection(json));
-        NotificationUtils.notifyInfo(anAction.getProject(), "XML字符串成功置入剪贴板：<br>" + json);
+        String xmlStr = getGenerator(psiClass).generate();
+        CopyPasteManager.getInstance().setContents(new StringSelection(xmlStr));
+        NotificationUtils.notifyInfo(anAction.getProject(), "XML字符串成功置入剪贴板");
     }
 
     @Override
-    public void update(@NotNull AnActionEvent anActionEvent) {
-        if (!PluginConfigState.getInstance().isXmlSwitch()) {
-            setActionInvisible(anActionEvent);
-        } else if (getOperatePsiClass(anActionEvent) == null) {
-            // 如果当前光标不在类名上，则不显示ConvertToJson组件
-            setActionInvisible(anActionEvent);
-        }
-        super.update(anActionEvent);
+    public boolean actionShow(@NotNull AnActionEvent anActionEvent) {
+        return PluginConfigState.getInstance().getXmlSwitch() == FunctionSwitchEnum.OPEN
+            && getOperatePsiClass(anActionEvent) != null;
     }
 
     protected Generator getGenerator(PsiClass psiClass) {

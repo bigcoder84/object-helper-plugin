@@ -44,10 +44,12 @@ public class ObjectHelperConfigurable implements SearchableConfigurable {
     public void apply() {
         PluginConfigModel instance = PluginConfigState.getInstance();
         PluginConfigModel currentConfigModel = configPage.getCurrentConfigModel();
-        instance.setJsonSwitch(currentConfigModel.isJsonSwitch());
-        instance.setThriftSwitch(currentConfigModel.isThriftSwitch());
-        instance.setXmlSwitch(currentConfigModel.isXmlSwitch());
-        instance.setObjectCopySwitch(currentConfigModel.isObjectCopySwitch());
+        instance.setJsonSwitch(currentConfigModel.getJsonSwitch());
+        instance.setThriftSwitch(currentConfigModel.getThriftSwitch());
+        instance.setXmlSwitch(currentConfigModel.getXmlSwitch());
+        instance.setObjectCopySwitch(currentConfigModel.getObjectCopySwitch());
+        instance.setObjectCopyMethodFieldGenerateAnnotation(currentConfigModel.getObjectCopyMethodFieldGenerateAnnotation());
+        instance.setObjectCopyMethodFieldGenerateMode(currentConfigModel.getObjectCopyMethodFieldGenerateMode());
     }
 
 }

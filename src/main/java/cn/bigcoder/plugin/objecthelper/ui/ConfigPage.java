@@ -1,8 +1,13 @@
 package cn.bigcoder.plugin.objecthelper.ui;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.FieldGenerateModeEnum;
+import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
+import cn.bigcoder.plugin.objecthelper.common.enums.WhetherEnum;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigModel;
 
+import java.util.Optional;
+import java.util.function.Function;
 import javax.swing.*;
 
 /**
@@ -11,13 +16,14 @@ import javax.swing.*;
  **/
 public class ConfigPage {
 
-    private static final String OPEN_STATUS = "open";
-
     private JPanel mainPanel;
     private JComboBox classToJsonSwitch;
     private JComboBox classToThriftSwitch;
     private JComboBox classToXmlSwitch;
     private JComboBox objectCopyMethodSwitch;
+    private JButton tipsButton;
+    private JComboBox objectCopyMethodGenerateMode;
+    private JComboBox objectCopyMethodGenerateAnnotation;
 
     public JPanel getMainPanel() {
         initField();
@@ -29,10 +35,12 @@ public class ConfigPage {
      */
     public void initField() {
         PluginConfigModel instance = PluginConfigState.getInstance();
-        this.classToJsonSwitch.setSelectedItem(convertComboBoxItem(instance.isJsonSwitch()));
-        this.classToThriftSwitch.setSelectedItem(convertComboBoxItem(instance.isThriftSwitch()));
-        this.classToXmlSwitch.setSelectedItem(convertComboBoxItem(instance.isXmlSwitch()));
-        this.objectCopyMethodSwitch.setSelectedItem(convertComboBoxItem(instance.isObjectCopySwitch()));
+        this.classToJsonSwitch.setSelectedItem(instance.getJsonSwitch().getCode());
+        this.classToThriftSwitch.setSelectedItem(instance.getThriftSwitch().getCode());
+        this.classToXmlSwitch.setSelectedItem(instance.getXmlSwitch().getCode());
+        this.objectCopyMethodSwitch.setSelectedItem(instance.getObjectCopySwitch().getCode());
+        this.objectCopyMethodGenerateAnnotation.setSelectedItem(instance.getObjectCopyMethodFieldGenerateAnnotation().getCode());
+        this.objectCopyMethodGenerateMode.setSelectedItem(instance.getObjectCopyMethodFieldGenerateMode().getCode());
     }
 
     /**
@@ -42,17 +50,32 @@ public class ConfigPage {
      */
     public PluginConfigModel getCurrentConfigModel() {
         PluginConfigModel pluginConfigModel = new PluginConfigModel();
-        pluginConfigModel.setJsonSwitch(this.classToJsonSwitch.getSelectedItem().equals(OPEN_STATUS));
-        pluginConfigModel.setThriftSwitch(this.classToThriftSwitch.getSelectedItem().equals(OPEN_STATUS));
-        pluginConfigModel.setXmlSwitch(this.classToXmlSwitch.getSelectedItem().equals(OPEN_STATUS));
-        pluginConfigModel.setObjectCopySwitch(this.objectCopyMethodSwitch.getSelectedItem().equals(OPEN_STATUS));
+
+        Optional.ofNullable(this.classToJsonSwitch.getSelectedItem()).ifPresent(e -> {
+                pluginConfigModel.setJsonSwitch(FunctionSwitchEnum.nameOf(e.toString()));
+            }
+        );
+        Optional.ofNullable(this.classToThriftSwitch.getSelectedItem()).ifPresent(e -> {
+                pluginConfigModel.setThriftSwitch(FunctionSwitchEnum.nameOf(e.toString()));
+            }
+        );
+        Optional.ofNullable(this.classToXmlSwitch.getSelectedItem()).ifPresent(e -> {
+                pluginConfigModel.setXmlSwitch(FunctionSwitchEnum.nameOf(e.toString()));
+            }
+        );
+        Optional.ofNullable(this.objectCopyMethodSwitch.getSelectedItem()).ifPresent(e -> {
+                pluginConfigModel.setObjectCopySwitch(FunctionSwitchEnum.nameOf(e.toString()));
+            }
+        );
+        Optional.ofNullable(this.objectCopyMethodGenerateMode.getSelectedItem()).ifPresent(e -> {
+                pluginConfigModel.setObjectCopyMethodFieldGenerateMode(FieldGenerateModeEnum.nameOf(e.toString()));
+            }
+        );
+        Optional.ofNullable(this.objectCopyMethodGenerateAnnotation.getSelectedItem()).ifPresent(e -> {
+                pluginConfigModel.setObjectCopyMethodFieldGenerateAnnotation(WhetherEnum.nameOf(e.toString()));
+            }
+        );
         return pluginConfigModel;
     }
 
-    private static String convertComboBoxItem(boolean switchTag) {
-        if (switchTag) {
-            return "open";
-        }
-        return "close";
-    }
 }

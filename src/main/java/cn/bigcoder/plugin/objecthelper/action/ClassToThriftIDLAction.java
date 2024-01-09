@@ -1,9 +1,9 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
 import cn.bigcoder.plugin.objecthelper.common.util.NotificationUtils;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.idl.ThriftIDLGenerator;
-import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.psi.PsiClass;
@@ -12,13 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.datatransfer.StringSelection;
 
 import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getOperatePsiClass;
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.setActionInvisible;
 
 /**
  * @author: Jindong.Tian
  * @date: 2021-08-21
  **/
-public class ClassToThriftIDLAction extends AnAction {
+public class ClassToThriftIDLAction extends AbstractClassAnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         PsiClass psiClass = getOperatePsiClass(anActionEvent);
@@ -31,13 +30,8 @@ public class ClassToThriftIDLAction extends AnAction {
     }
 
     @Override
-    public void update(@NotNull AnActionEvent anActionEvent) {
-        if (!PluginConfigState.getInstance().isThriftSwitch()) {
-            setActionInvisible(anActionEvent);
-        } else if (getOperatePsiClass(anActionEvent) == null) {
-            // 如果当前光标不在类名上，则不显示ConvertToJson组件
-            setActionInvisible(anActionEvent);
-        }
-        super.update(anActionEvent);
+    public boolean actionShow(@NotNull AnActionEvent anActionEvent) {
+        return PluginConfigState.getInstance().getThriftSwitch() == FunctionSwitchEnum.OPEN
+            && getOperatePsiClass(anActionEvent) != null;
     }
 }

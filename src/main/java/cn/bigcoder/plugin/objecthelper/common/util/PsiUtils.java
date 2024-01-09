@@ -1,7 +1,7 @@
 package cn.bigcoder.plugin.objecthelper.common.util;
 
 import cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord;
-import cn.bigcoder.plugin.objecthelper.common.enums.JavaModify;
+import cn.bigcoder.plugin.objecthelper.common.enums.JavaModifyEnum;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -13,6 +13,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
@@ -170,20 +171,20 @@ public class PsiUtils {
      * @return
      */
     @NotNull
-    public static List<JavaModify> getMethodModifies(PsiModifierList modifierList) {
-        List<JavaModify> result = new ArrayList<>();
-        if (modifierList.hasModifierProperty(JavaModify.PUBLIC.getName())) {
-            result.add(JavaModify.PUBLIC);
-        } else if (modifierList.hasModifierProperty(JavaModify.PROTECTED.getName())) {
-            result.add(JavaModify.PROTECTED);
-        } else if (modifierList.hasModifierProperty(JavaModify.PRIVATE.getName())) {
-            result.add(JavaModify.PRIVATE);
+    public static List<JavaModifyEnum> getMethodModifies(PsiModifierList modifierList) {
+        List<JavaModifyEnum> result = new ArrayList<>();
+        if (modifierList.hasModifierProperty(JavaModifyEnum.PUBLIC.getName())) {
+            result.add(JavaModifyEnum.PUBLIC);
+        } else if (modifierList.hasModifierProperty(JavaModifyEnum.PROTECTED.getName())) {
+            result.add(JavaModifyEnum.PROTECTED);
+        } else if (modifierList.hasModifierProperty(JavaModifyEnum.PRIVATE.getName())) {
+            result.add(JavaModifyEnum.PRIVATE);
         }
-        if (modifierList.hasModifierProperty(JavaModify.STATIC.getName())) {
-            result.add(JavaModify.STATIC);
+        if (modifierList.hasModifierProperty(JavaModifyEnum.STATIC.getName())) {
+            result.add(JavaModifyEnum.STATIC);
         }
-        if (modifierList.hasModifierProperty(JavaModify.FINAL.getName())) {
-            result.add(JavaModify.FINAL);
+        if (modifierList.hasModifierProperty(JavaModifyEnum.FINAL.getName())) {
+            result.add(JavaModifyEnum.FINAL);
         }
         return result;
     }
@@ -199,6 +200,23 @@ public class PsiUtils {
         List<PsiField> result = Lists.newArrayList();
         recursiveAllFields(psiClass, result);
         return result;
+    }
+
+    /**
+     * 判断一个字段是否是类的成员属性
+     *
+     * @param psiField
+     * @return
+     */
+    public static boolean isMemberField(PsiField psiField) {
+        PsiModifierList modifierList = psiField.getModifierList();
+        if (modifierList == null ||
+            modifierList.hasModifierProperty(PsiModifier.STATIC) ||
+            modifierList.hasModifierProperty(PsiModifier.FINAL) ||
+            modifierList.hasModifierProperty(PsiModifier.SYNCHRONIZED)) {
+            return false;
+        }
+        return true;
     }
 
     /**
