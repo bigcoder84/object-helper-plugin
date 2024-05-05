@@ -37,6 +37,11 @@ public class PluginConfigModel {
      */
     private WhetherEnum objectCopyMethodFieldGenerateAnnotation = WhetherEnum.YES;
 
+    /**
+     * Object Copy Method 功能中，使用builder模式生成拷贝代码时的判断依据，当目标对象类中包含正则所指定的方法，则默认按照builder模式生成，否则使用set模式生成
+     */
+    private String builderInstanceMethodName = ".*(builder|newBuilder).*";
+
     public FunctionSwitchEnum getJsonSwitch() {
         return jsonSwitch;
     }
@@ -87,6 +92,14 @@ public class PluginConfigModel {
         this.objectCopyMethodFieldGenerateAnnotation = objectCopyMethodFieldGenerateAnnotation;
     }
 
+    public String getBuilderInstanceMethodName() {
+        return builderInstanceMethodName;
+    }
+
+    public void setBuilderInstanceMethodName(String builderInstanceMethodName) {
+        this.builderInstanceMethodName = builderInstanceMethodName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -97,14 +110,15 @@ public class PluginConfigModel {
         }
         PluginConfigModel that = (PluginConfigModel) o;
         return jsonSwitch == that.jsonSwitch && thriftSwitch == that.thriftSwitch && xmlSwitch == that.xmlSwitch
-            && objectCopySwitch == that.objectCopySwitch
-            && objectCopyMethodFieldGenerateMode == that.objectCopyMethodFieldGenerateMode
-            && objectCopyMethodFieldGenerateAnnotation == that.objectCopyMethodFieldGenerateAnnotation;
+                && objectCopySwitch == that.objectCopySwitch
+                && objectCopyMethodFieldGenerateMode == that.objectCopyMethodFieldGenerateMode
+                && objectCopyMethodFieldGenerateAnnotation == that.objectCopyMethodFieldGenerateAnnotation
+                && Objects.equals(builderInstanceMethodName, that.builderInstanceMethodName);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(jsonSwitch, thriftSwitch, xmlSwitch, objectCopySwitch, objectCopyMethodFieldGenerateMode,
-            objectCopyMethodFieldGenerateAnnotation);
+                objectCopyMethodFieldGenerateAnnotation, builderInstanceMethodName);
     }
 }

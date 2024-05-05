@@ -12,6 +12,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiIdentifier;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author: Jindong.Tian
@@ -151,6 +153,21 @@ public class PsiUtils {
             return JavaKeyWord.VOID;
         }
         return returnType.getPresentableText();
+    }
+
+    /**
+     * 获取PsiClass 名称
+     *
+     * @param psiClass
+     * @return
+     */
+    @Nullable
+    public static String getPsiClassName(PsiClass psiClass) {
+        PsiIdentifier nameIdentifier = psiClass.getNameIdentifier();
+        if (nameIdentifier == null) {
+            return null;
+        }
+        return nameIdentifier.getText();
     }
 
     /**

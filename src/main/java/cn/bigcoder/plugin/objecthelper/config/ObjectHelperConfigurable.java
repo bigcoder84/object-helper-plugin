@@ -50,6 +50,7 @@ public class ObjectHelperConfigurable implements SearchableConfigurable {
         instance.setObjectCopySwitch(currentConfigModel.getObjectCopySwitch());
         instance.setObjectCopyMethodFieldGenerateAnnotation(currentConfigModel.getObjectCopyMethodFieldGenerateAnnotation());
         instance.setObjectCopyMethodFieldGenerateMode(currentConfigModel.getObjectCopyMethodFieldGenerateMode());
+        instance.setBuilderInstanceMethodName(currentConfigModel.getBuilderInstanceMethodName());
     }
 
 }

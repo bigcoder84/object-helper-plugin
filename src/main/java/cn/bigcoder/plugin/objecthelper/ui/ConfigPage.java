@@ -7,7 +7,6 @@ import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigModel;
 
 import java.util.Optional;
-import java.util.function.Function;
 import javax.swing.*;
 
 /**
@@ -24,6 +23,7 @@ public class ConfigPage {
     private JButton tipsButton;
     private JComboBox objectCopyMethodGenerateMode;
     private JComboBox objectCopyMethodGenerateAnnotation;
+    private JTextField builderInstanceMethodName;
 
     public JPanel getMainPanel() {
         initField();
@@ -41,6 +41,7 @@ public class ConfigPage {
         this.objectCopyMethodSwitch.setSelectedItem(instance.getObjectCopySwitch().getCode());
         this.objectCopyMethodGenerateAnnotation.setSelectedItem(instance.getObjectCopyMethodFieldGenerateAnnotation().getCode());
         this.objectCopyMethodGenerateMode.setSelectedItem(instance.getObjectCopyMethodFieldGenerateMode().getCode());
+        this.builderInstanceMethodName.setText(instance.getBuilderInstanceMethodName());
     }
 
     /**
@@ -74,6 +75,9 @@ public class ConfigPage {
         Optional.ofNullable(this.objectCopyMethodGenerateAnnotation.getSelectedItem()).ifPresent(e -> {
                 pluginConfigModel.setObjectCopyMethodFieldGenerateAnnotation(WhetherEnum.nameOf(e.toString()));
             }
+        );
+        Optional.ofNullable(this.builderInstanceMethodName.getText()).ifPresent(
+                pluginConfigModel::setBuilderInstanceMethodName
         );
         return pluginConfigModel;
     }

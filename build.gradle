@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'cn.bigcoder.plugin'
-version '1.3.2'
+version '1.3.3'
 
 repositories {
     mavenCentral()
@@ -29,8 +29,9 @@ intellij {
 }
 patchPluginXml {
     sinceBuild = '211'
+    untilBuild = '281'
     changeNotes = """
-        1. fix feature:Resolve version compatibility issues and adapt new versions of the IDE
+        1. new feature: Object Copy Method support builder mode.
       """
 }
 test {
