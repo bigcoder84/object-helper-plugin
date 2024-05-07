@@ -14,6 +14,8 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="left:129dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
@@ -179,6 +181,24 @@
         <properties>
           <text value="Tips"/>
           <toolTipText value="If the converted source object and target object fields are not identical, the non-existent fields are generated in the form of code annotation"/>
+        </properties>
+      </component>
+      <component id="3b092" class="javax.swing.JTextField" binding="builderInstanceMethodName">
+        <constraints>
+          <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="17e23" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties>
+          <text value="builder instance method"/>
         </properties>
       </component>
     </children>
