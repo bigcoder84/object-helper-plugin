@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiClassType;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.PsiFile;
@@ -18,7 +19,9 @@ import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiModifierList;
 import com.intellij.psi.PsiParameter;
 import com.intellij.psi.PsiType;
+import com.intellij.psi.PsiVariable;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +61,25 @@ public class PsiUtils {
         PsiElement psiElement = getOperatePsiElement(actionEvent);
         if (psiElement instanceof PsiClass) {
             return (PsiClass) psiElement;
+        } else if (psiElement instanceof PsiVariable) {
+            PsiType type = ((PsiVariable) psiElement).getType();
+            if (type instanceof PsiClassType) {
+                return ((PsiClassType) type).resolve();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 获取当前操作下的 {@code PsiClass}
+     *
+     * @param actionEvent
+     * @return
+     */
+    public static String getOperateFieldName(AnActionEvent actionEvent) {
+        PsiElement psiElement = getOperatePsiElement(actionEvent);
+        if (psiElement instanceof PsiVariable) {
+            return ((PsiVariable) psiElement).getName();
         }
         return null;
     }
@@ -228,12 +250,52 @@ public class PsiUtils {
     public static boolean isMemberField(PsiField psiField) {
         PsiModifierList modifierList = psiField.getModifierList();
         if (modifierList == null ||
-            modifierList.hasModifierProperty(PsiModifier.STATIC) ||
-            modifierList.hasModifierProperty(PsiModifier.FINAL) ||
-            modifierList.hasModifierProperty(PsiModifier.SYNCHRONIZED)) {
+                modifierList.hasModifierProperty(PsiModifier.STATIC) ||
+                modifierList.hasModifierProperty(PsiModifier.FINAL) ||
+                modifierList.hasModifierProperty(PsiModifier.SYNCHRONIZED)) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 根据类名称模糊匹配项目中的PsiClass
+     *
+     * @param project
+     * @param classNameStr 模糊匹配的类名称（大小写不敏感）
+     * @return
+     */
+    public static @NotNull List<PsiClass> matchPsiClassByName(Project project, String classNameStr) {
+        JavaPsiFacade psiFacade = JavaPsiFacade.getInstance(project);
+        PsiShortNamesCache shortNamesCache = PsiShortNamesCache.getInstance(project);
+        List<PsiClass> exactMatches = new ArrayList<>();
+        List<PsiClass> fuzzyMatches = new ArrayList<>();
+
+        // 处理带包名的情况
+        if (classNameStr.contains(".")) {
+            PsiClass cls = psiFacade.findClass(classNameStr, GlobalSearchScope.allScope(project));
+            if (cls != null) {
+                exactMatches.add(cls);
+            }
+        }
+
+        // 获取所有类名
+        String[] allClassNames = shortNamesCache.getAllClassNames();
+        for (String className : allClassNames) {
+            if (className.equalsIgnoreCase(classNameStr)) {
+                // 完全匹配
+                PsiClass[] classes = shortNamesCache.getClassesByName(className, GlobalSearchScope.allScope(project));
+                exactMatches.addAll(Arrays.asList(classes));
+            } else if (className.toLowerCase().contains(classNameStr.toLowerCase())) {
+                // 模糊匹配
+                PsiClass[] classes = shortNamesCache.getClassesByName(className, GlobalSearchScope.allScope(project));
+                fuzzyMatches.addAll(Arrays.asList(classes));
+            }
+        }
+
+        // 合并结果，优先展示完全匹配的类
+        exactMatches.addAll(fuzzyMatches);
+        return exactMatches;
     }
 
     /**

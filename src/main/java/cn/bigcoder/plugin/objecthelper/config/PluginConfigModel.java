@@ -2,7 +2,7 @@ package cn.bigcoder.plugin.objecthelper.config;
 
 import cn.bigcoder.plugin.objecthelper.common.enums.FieldGenerateModeEnum;
 import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
-import cn.bigcoder.plugin.objecthelper.common.enums.WhetherEnum;
+import cn.bigcoder.plugin.objecthelper.common.enums.EnableEnum;
 import java.util.Objects;
 
 /**
@@ -35,7 +35,7 @@ public class PluginConfigModel {
     /**
      * Object Copy Method 功能中，Source 和 Target 对象之间差异的字段，是否以代码注释的形式生成代码
      */
-    private WhetherEnum objectCopyMethodFieldGenerateAnnotation = WhetherEnum.YES;
+    private EnableEnum objectCopyMethodFieldGenerateAnnotation = EnableEnum.ENABLE;
 
     /**
      * Object Copy Method 功能中，使用builder模式生成拷贝代码时的判断依据，当目标对象类中包含正则所指定的方法，则默认按照builder模式生成，否则使用set模式生成
@@ -83,12 +83,12 @@ public class PluginConfigModel {
         this.objectCopyMethodFieldGenerateMode = objectCopyMethodFieldGenerateMode;
     }
 
-    public WhetherEnum getObjectCopyMethodFieldGenerateAnnotation() {
+    public EnableEnum getObjectCopyMethodFieldGenerateAnnotation() {
         return objectCopyMethodFieldGenerateAnnotation;
     }
 
     public void setObjectCopyMethodFieldGenerateAnnotation(
-        WhetherEnum objectCopyMethodFieldGenerateAnnotation) {
+        EnableEnum objectCopyMethodFieldGenerateAnnotation) {
         this.objectCopyMethodFieldGenerateAnnotation = objectCopyMethodFieldGenerateAnnotation;
     }
 

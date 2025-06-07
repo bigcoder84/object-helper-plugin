@@ -16,8 +16,8 @@ import com.intellij.psi.PsiField;
  **/
 public class SetObjectCopyStrategy extends AbstractObjectCopyStrategy {
 
-    public SetObjectCopyStrategy(PsiClass sourceClass, PsiClass targetClass, String sourceParamName) {
-        super(sourceClass, targetClass, sourceParamName);
+    public SetObjectCopyStrategy(PsiClass sourceClass, PsiClass targetClass, String sourceParamName, String targetParamName) {
+        super(sourceClass, targetClass, sourceParamName, targetParamName);
     }
 
     /**
@@ -33,8 +33,7 @@ public class SetObjectCopyStrategy extends AbstractObjectCopyStrategy {
     @Override
     protected String generatePrefix() {
         String psiClassName = getPsiClassName(targetClass);
-        return generateNullCheck(sourceParamName) + LINE_SEPARATOR +
-                psiClassName + BLANK_SEPARATOR + targetParamName + "= new " + psiClassName + "();" + LINE_SEPARATOR;
+        return psiClassName + BLANK_SEPARATOR + targetParamName + " = new " + psiClassName + "();" + LINE_SEPARATOR;
     }
 
     @Override
@@ -45,15 +44,6 @@ public class SetObjectCopyStrategy extends AbstractObjectCopyStrategy {
 
     @Override
     protected String generateSuffix() {
-        return "return " + targetParamName + SEMICOLON_SEPARATOR;
-    }
-
-    /**
-     * 生成示例：{@code if (user == null) {return null;}}
-     *
-     * @return
-     */
-    private String generateNullCheck(String sourceParamName) {
-        return "if(" + sourceParamName + "==null){return null;}";
+        return "";
     }
 }

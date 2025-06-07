@@ -1,13 +1,15 @@
 package cn.bigcoder.plugin.objecthelper.ui;
 
+import cn.bigcoder.plugin.objecthelper.common.enums.EnableEnum;
 import cn.bigcoder.plugin.objecthelper.common.enums.FieldGenerateModeEnum;
 import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
-import cn.bigcoder.plugin.objecthelper.common.enums.WhetherEnum;
-import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigModel;
-
+import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import java.util.Optional;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * @author: Jindong.Tian
@@ -73,7 +75,7 @@ public class ConfigPage {
             }
         );
         Optional.ofNullable(this.objectCopyMethodGenerateAnnotation.getSelectedItem()).ifPresent(e -> {
-                pluginConfigModel.setObjectCopyMethodFieldGenerateAnnotation(WhetherEnum.nameOf(e.toString()));
+                pluginConfigModel.setObjectCopyMethodFieldGenerateAnnotation(EnableEnum.nameOf(e.toString()));
             }
         );
         Optional.ofNullable(this.builderInstanceMethodName.getText()).ifPresent(
