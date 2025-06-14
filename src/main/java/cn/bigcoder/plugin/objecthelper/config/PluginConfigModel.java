@@ -14,19 +14,19 @@ public class PluginConfigModel {
     /**
      * 是否开启 Class To Json 功能，默认为开启状态
      */
-    private FunctionSwitchEnum jsonSwitch = FunctionSwitchEnum.OPEN;
+    private FunctionSwitchEnum jsonSwitch = FunctionSwitchEnum.ENABLE;
     /**
      * 是否开启 Class To Thrift IDL 功能，默认为开启状态
      */
-    private FunctionSwitchEnum thriftSwitch = FunctionSwitchEnum.OPEN;
+    private FunctionSwitchEnum thriftSwitch = FunctionSwitchEnum.ENABLE;
     /**
      * 是否开启 Class To XML 功能，默认为开启状态
      */
-    private FunctionSwitchEnum xmlSwitch = FunctionSwitchEnum.OPEN;
+    private FunctionSwitchEnum xmlSwitch = FunctionSwitchEnum.ENABLE;
     /**
      * 是否开启 Object Copy Method 功能，默认为开启状态
      */
-    private FunctionSwitchEnum objectCopySwitch = FunctionSwitchEnum.OPEN;
+    private FunctionSwitchEnum objectCopySwitch = FunctionSwitchEnum.ENABLE;
     /**
      * Object Copy Method 功能中，以Source/Target对象为基础生成字段拷贝
      */

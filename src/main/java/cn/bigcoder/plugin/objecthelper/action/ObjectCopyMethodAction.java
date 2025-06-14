@@ -25,7 +25,7 @@ public class ObjectCopyMethodAction extends AbstractClassAnAction {
 
     @Override
     public boolean actionShow(AnActionEvent anActionEvent) {
-        return PluginConfigState.getInstance().getObjectCopySwitch() == FunctionSwitchEnum.OPEN
+        return PluginConfigState.getInstance().getObjectCopySwitch() == FunctionSwitchEnum.ENABLE
             && check(PsiUtils.getCursorPsiMethod(anActionEvent));
     }
 
