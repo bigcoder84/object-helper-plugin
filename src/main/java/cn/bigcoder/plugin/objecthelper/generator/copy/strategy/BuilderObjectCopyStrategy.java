@@ -15,26 +15,17 @@ import com.intellij.psi.PsiField;
  **/
 public class BuilderObjectCopyStrategy extends AbstractObjectCopyStrategy {
 
-    public BuilderObjectCopyStrategy(PsiClass sourceClass, PsiClass targetClass, String sourceParamName) {
-        super(sourceClass, targetClass, sourceParamName);
+    public BuilderObjectCopyStrategy(PsiClass sourceClass, PsiClass targetClass, String sourceParamName,
+            String targetParamName) {
+        super(sourceClass, targetClass, sourceParamName, targetParamName);
     }
 
-
-    /**
-     * 生成类似如下代码：
-     *
-     * if (user == null) {
-     *     return null;
-     * }
-     * return UserDto.builder()
-     *
-     * @return
-     */
     @Override
     protected String generatePrefix() {
-        return generateNullCheck(sourceParamName) + LINE_SEPARATOR +
-                "return" + BLANK_SEPARATOR + getPsiClassName(targetClass) + ".builder()" + LINE_SEPARATOR;
+        String className = getPsiClassName(targetClass);
+        return className + BLANK_SEPARATOR + super.targetParamName + " = " + className + ".builder()" + LINE_SEPARATOR;
     }
+
 
     @Override
     protected String generateFiledCopy(PsiField field) {
@@ -47,14 +38,5 @@ public class BuilderObjectCopyStrategy extends AbstractObjectCopyStrategy {
     @Override
     protected String generateSuffix() {
         return ".build();" + LINE_SEPARATOR;
-    }
-
-    /**
-     * 生成示例：{@code if (user == null) {return null;}}
-     *
-     * @return
-     */
-    private String generateNullCheck(String sourceParamName) {
-        return "if(" + sourceParamName + "==null){return null;}";
     }
 }

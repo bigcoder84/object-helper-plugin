@@ -1,5 +1,7 @@
 package cn.bigcoder.plugin.objecthelper.action;
 
+import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getOperatePsiClass;
+
 import cn.bigcoder.plugin.objecthelper.common.enums.FunctionSwitchEnum;
 import cn.bigcoder.plugin.objecthelper.common.util.NotificationUtils;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
@@ -10,15 +12,13 @@ import com.google.gson.GsonBuilder;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.ide.CopyPasteManager;
 import com.intellij.psi.PsiClass;
-
 import java.awt.datatransfer.StringSelection;
-
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getOperatePsiClass;
+import org.jetbrains.annotations.NotNull;
 
 public class ClassToJsonAction extends AbstractClassAnAction {
 
     @Override
-    public void actionPerformed(AnActionEvent anAction) {
+    public void actionPerformed(@NotNull AnActionEvent anAction) {
         PsiClass psiClass = getOperatePsiClass(anAction);
         if (psiClass == null) {
             return;

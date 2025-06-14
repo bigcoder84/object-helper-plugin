@@ -61,8 +61,8 @@
         </constraints>
         <properties>
           <model>
-            <item value="open"/>
-            <item value="close"/>
+            <item value="enable"/>
+            <item value="disable"/>
           </model>
           <toolTipText value=""/>
         </properties>
@@ -74,8 +74,8 @@
         </constraints>
         <properties>
           <model>
-            <item value="open"/>
-            <item value="close"/>
+            <item value="enable"/>
+            <item value="disable"/>
           </model>
         </properties>
       </component>
@@ -86,8 +86,8 @@
         </constraints>
         <properties>
           <model>
-            <item value="open"/>
-            <item value="close"/>
+            <item value="enable"/>
+            <item value="disable"/>
           </model>
         </properties>
       </component>
@@ -107,8 +107,8 @@
         </constraints>
         <properties>
           <model>
-            <item value="open"/>
-            <item value="close"/>
+            <item value="enable"/>
+            <item value="disable"/>
           </model>
         </properties>
       </component>
@@ -168,8 +168,8 @@
         </constraints>
         <properties>
           <model>
-            <item value="yes"/>
-            <item value="no"/>
+            <item value="enable"/>
+            <item value="disable"/>
           </model>
         </properties>
       </component>

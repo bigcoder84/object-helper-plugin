@@ -1,16 +1,11 @@
 package cn.bigcoder.plugin.objecthelper.generator.method;
 
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getPsiClass;
+import static cn.bigcoder.plugin.objecthelper.common.constant.JavaKeyWord.SEMICOLON_SEPARATOR;
 
-import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.AbstractMethodGenerator;
-import cn.bigcoder.plugin.objecthelper.generator.copy.AbstractObjectCopyStrategy;
-import cn.bigcoder.plugin.objecthelper.generator.copy.strategy.BuilderObjectCopyStrategy;
-import cn.bigcoder.plugin.objecthelper.generator.copy.strategy.SetObjectCopyStrategy;
-import com.intellij.psi.PsiClass;
+import cn.bigcoder.plugin.objecthelper.generator.Generator;
+import cn.bigcoder.plugin.objecthelper.generator.copy.SmartObjectCopyGenerator;
 import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiParameter;
-import java.util.regex.Pattern;
 
 /**
  * @author: Jindong.Tian
@@ -18,72 +13,50 @@ import java.util.regex.Pattern;
  **/
 public class ObjectCopyMethodGenerator extends AbstractMethodGenerator {
 
-    /**
-     * 方法第一个参数名称
-     */
-    private String firstParameterName;
-
-    private void init(PsiMethod psiMethod) {
-        if (psiMethod == null) {
-            return;
-        }
-        super.project = psiMethod.getProject();
-        super.psiMethod = psiMethod;
-        this.firstParameterName = getFirstParameter().getName();
+    public ObjectCopyMethodGenerator(PsiMethod psiMethod) {
+        super(psiMethod);
     }
 
     public static ObjectCopyMethodGenerator getInstance(PsiMethod psiMethod) {
-        ObjectCopyMethodGenerator objectCopyMethodGenerator = new ObjectCopyMethodGenerator();
-        objectCopyMethodGenerator.init(psiMethod);
-        return objectCopyMethodGenerator;
+        return new ObjectCopyMethodGenerator(psiMethod);
     }
 
     /**
+     * 生成对象拷贝方法提
      * 此方法中不应该存在判空的操作，依赖环境的建议重写父类的check方法，在生成早期拦截异常情况
      *
      * @return
      */
     @Override
     protected String generateMethodBody() {
-        AbstractObjectCopyStrategy copyStrategy = getCopyStrategy();
-        return copyStrategy.generate();
-    }
+        StringBuilder stringBuilder = new StringBuilder();
+        // check null line
+        String nullCheckStr = generateNullCheck();
+        stringBuilder.append(nullCheckStr);
 
-    private AbstractObjectCopyStrategy getCopyStrategy() {
-        // mainClass 代表以哪个类字段为基础生成字段拷贝代码
-        PsiClass returnClass = getReturnClass();
-        PsiClass sourceClass = getFirstParameterClass();
-        String builderRegex = PluginConfigState.getInstance().getBuilderInstanceMethodName();
+        // object copy block
+        Generator generator = new SmartObjectCopyGenerator(firstParameterClass, targetClass, firstParameterName,
+                targetParameterName);
+        stringBuilder.append(generator.generate());
 
-        Pattern pattern = Pattern.compile(builderRegex);
-        for (PsiMethod method : returnClass.getMethods()) {
-            if (pattern.matcher(method.getName()).matches()) {
-                return new BuilderObjectCopyStrategy(sourceClass, returnClass, this.firstParameterName);
-            }
-        }
-        return new SetObjectCopyStrategy(sourceClass, returnClass, this.firstParameterName);
-    }
-
-    /**
-     * 获取参数列表第一个参数的{@code PsiParameter}
-     *
-     * @return
-     */
-    private PsiParameter getFirstParameter() {
-        return getParameters().get(FIRST_INDEX);
+        // return line
+        stringBuilder.append("return ")
+                .append(targetParameterName)
+                .append(SEMICOLON_SEPARATOR);
+        return stringBuilder.toString();
     }
 
 
     /**
-     * 获取参数列表第一个参数的{@code PsiClass}
+     * 生成类似如下代码：
+     *
+     * if (user == null) {
+     * return null;
+     * }
      *
      * @return
      */
-    private PsiClass getFirstParameterClass() {
-        return getPsiClass(getFirstParameter().getType(), project);
-    }
-
-    private PsiClass getReturnClass() {
-        return getPsiClass(getReturnType(), project);
+    private String generateNullCheck() {
+        return "if(" + super.firstParameterName + "==null){return null;}";
     }
 }

@@ -48,6 +48,9 @@
     <action id="cn.bigcoder.plugin.objecthelper.action.ObjectCopyMethodAction" class="cn.bigcoder.plugin.objecthelper.action.ObjectCopyMethodAction" text="Object Copy Method">
       <add-to-group group-id="GenerateGroup" anchor="last"/>
     </action>
+    <action id="cn.bigcoder.plugin.objecthelper.action.ObjectCopyActionGenerator" class="cn.bigcoder.plugin.objecthelper.action.ObjectCopyAction" text="Object Copy">
+      <add-to-group group-id="GenerateGroup" anchor="last"/>
+    </action>
     <action id="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction"
             class="cn.bigcoder.plugin.objecthelper.action.ClassToFormatJsonAction" text="Class To JSON"
             description="Converts the Java class to a JSON string">
@@ -63,6 +66,11 @@
     <action id="cn.bigcoder.plugin.objecthelper.action.ClassToXMLAction"
             class="cn.bigcoder.plugin.objecthelper.action.ClassToXMLAction" text="Class To XML"
             description="Converts the Java class to a XML string">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+    </action>
+    <action id="cn.bigcoder.plugin.objecthelper.action.ObjectCopyAction"
+            class="cn.bigcoder.plugin.objecthelper.action.ObjectCopyAction" text="Object Copy"
+            description="Generate object copy code">
       <add-to-group group-id="EditorPopupMenu" anchor="first"/>
     </action>
   </actions>

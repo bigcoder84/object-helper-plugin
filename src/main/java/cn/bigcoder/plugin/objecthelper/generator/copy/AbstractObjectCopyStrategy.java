@@ -1,18 +1,14 @@
 package cn.bigcoder.plugin.objecthelper.generator.copy;
 
-import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.getPsiClassName;
-
+import cn.bigcoder.plugin.objecthelper.common.enums.EnableEnum;
 import cn.bigcoder.plugin.objecthelper.common.enums.FieldGenerateModeEnum;
-import cn.bigcoder.plugin.objecthelper.common.enums.WhetherEnum;
 import cn.bigcoder.plugin.objecthelper.common.util.PsiUtils;
-import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
 import cn.bigcoder.plugin.objecthelper.config.PluginConfigState;
 import cn.bigcoder.plugin.objecthelper.generator.Generator;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,16 +35,13 @@ public abstract class AbstractObjectCopyStrategy implements Generator {
      */
     protected String targetParamName;
 
-    public AbstractObjectCopyStrategy(PsiClass sourceClass, PsiClass targetClass, String sourceParamName) {
+    public AbstractObjectCopyStrategy(PsiClass sourceClass, PsiClass targetClass, String sourceParamName,
+            String targetParamName) {
         this.sourceClass = sourceClass;
         this.targetClass = targetClass;
         this.sourceParamName = sourceParamName;
         // 生成参数名
-        this.targetParamName = StringUtils.firstLowerCase(Objects.requireNonNull(getPsiClassName(targetClass)));
-        // 防止方法入参和返回参数名称一致
-        if (sourceParamName.equals(this.targetParamName)) {
-            this.targetParamName = this.targetParamName + "Res";
-        }
+        this.targetParamName = targetParamName;
     }
 
     @Override
@@ -80,7 +73,7 @@ public abstract class AbstractObjectCopyStrategy implements Generator {
             if (secondFieldNames.contains(field.getName())) {
                 result.append(generateFiledCopy(field));
             } else if (PluginConfigState.getInstance().getObjectCopyMethodFieldGenerateAnnotation()
-                    == WhetherEnum.YES) {
+                    == EnableEnum.ENABLE) {
                 // 如果源对象没有该字段，且开启了以注释模式生成代码的开关，则生成注释
                 annotationLine.add("// " + generateFiledCopy(field));
             }
