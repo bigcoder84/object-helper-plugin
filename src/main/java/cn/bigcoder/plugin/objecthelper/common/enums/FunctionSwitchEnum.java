@@ -5,8 +5,8 @@ package cn.bigcoder.plugin.objecthelper.common.enums;
  * @date: 2023-12-24
  **/
 public enum FunctionSwitchEnum implements CommonEnum {
-    OPEN("open"),
-    CLOSE("close"),
+    ENABLE("enable"),
+    DISABLE("disable"),
     ;
     private String code;
 

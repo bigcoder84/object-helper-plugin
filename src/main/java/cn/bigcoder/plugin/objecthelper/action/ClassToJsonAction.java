@@ -30,7 +30,7 @@ public class ClassToJsonAction extends AbstractClassAnAction {
 
     @Override
     public boolean actionShow(AnActionEvent anActionEvent) {
-        return PluginConfigState.getInstance().getJsonSwitch() == FunctionSwitchEnum.OPEN
+        return PluginConfigState.getInstance().getJsonSwitch() == FunctionSwitchEnum.ENABLE
             && getOperatePsiClass(anActionEvent) != null;
     }
 

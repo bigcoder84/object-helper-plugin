@@ -28,7 +28,7 @@ public class ClassToXMLAction extends AbstractClassAnAction {
 
     @Override
     public boolean actionShow(@NotNull AnActionEvent anActionEvent) {
-        return PluginConfigState.getInstance().getXmlSwitch() == FunctionSwitchEnum.OPEN
+        return PluginConfigState.getInstance().getXmlSwitch() == FunctionSwitchEnum.ENABLE
             && getOperatePsiClass(anActionEvent) != null;
     }
 

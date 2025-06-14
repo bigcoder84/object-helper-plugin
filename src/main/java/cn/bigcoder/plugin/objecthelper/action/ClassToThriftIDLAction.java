@@ -31,7 +31,7 @@ public class ClassToThriftIDLAction extends AbstractClassAnAction {
 
     @Override
     public boolean actionShow(@NotNull AnActionEvent anActionEvent) {
-        return PluginConfigState.getInstance().getThriftSwitch() == FunctionSwitchEnum.OPEN
+        return PluginConfigState.getInstance().getThriftSwitch() == FunctionSwitchEnum.ENABLE
             && getOperatePsiClass(anActionEvent) != null;
     }
 }
