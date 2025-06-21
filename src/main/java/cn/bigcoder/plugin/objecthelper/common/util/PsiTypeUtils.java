@@ -43,6 +43,8 @@ public class PsiTypeUtils {
         DATA_TYPES.add(LOCAL_DATE_TYPE);
         DATA_TYPES.add(LOCAL_DATE_TIME_TYPE);
         DATA_TYPES.add(BIG_DECIMAL);
+        DATA_TYPES.add(BOOLEAN_TYPE);
+        DATA_TYPES.add(BASE_BOOL_TYPE);
     }
 
     /**
@@ -76,6 +78,9 @@ public class PsiTypeUtils {
             case FLOAT_TYPE:
             case BASE_FLOAT_TYPE:
                 return 1.1f;
+            case BOOLEAN_TYPE:
+            case BASE_BOOL_TYPE:
+                return true;
             case DATE_TYPE:
                 return DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
             case LOCAL_DATE_TYPE:

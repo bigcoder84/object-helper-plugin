@@ -9,6 +9,7 @@ import cn.bigcoder.plugin.objecthelper.common.util.StringUtils;
 import cn.bigcoder.plugin.objecthelper.generator.Generator;
 import cn.bigcoder.plugin.objecthelper.generator.copy.SmartObjectCopyGenerator;
 import cn.bigcoder.plugin.objecthelper.ui.ClassSearchDialog;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.CaretModel;
@@ -21,6 +22,7 @@ import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 public class ObjectCopyAction extends AbstractClassAnAction {
+
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent anAction) {
@@ -62,6 +64,10 @@ public class ObjectCopyAction extends AbstractClassAnAction {
      * @param copyCodeStr
      */
     private void insertCode(Project project, String copyCodeStr) {
+        // 检查代码末尾是否有换行符，没有则添加
+        if (!copyCodeStr.endsWith("\n")) {
+            copyCodeStr += "\n";
+        }
         Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
         if (editor == null) {
             return;
@@ -69,43 +75,113 @@ public class ObjectCopyAction extends AbstractClassAnAction {
         CaretModel caretModel = editor.getCaretModel();
         int offset = caretModel.getOffset();
         Document document = editor.getDocument();
-        // 删除光标所在的变量
-        int startOffset = findVariableStartOffset(document, offset);
-        int endOffset = findVariableEndOffset(document, offset);
-        if (startOffset >= 0 && endOffset >= 0) {
-            WriteCommandAction.runWriteCommandAction(project, () -> {
-                document.deleteString(startOffset, endOffset);
-            });
+
+        // 获取当前光标所在行号
+        int lineNumber = document.getLineNumber(offset);
+        int lineStartOffset = document.getLineStartOffset(lineNumber);
+        int lineEndOffset = document.getLineEndOffset(lineNumber);
+
+        // 检查当前行在光标之后是否有非空白字符
+        CharSequence lineText = document.getCharsSequence().subSequence(offset, lineEndOffset);
+        boolean hasNonWhitespaceAfterCursor = !lineText.toString().trim().isEmpty();
+
+        // 获取当前行的缩进
+        String indent = getLineIndent(document, lineNumber);
+        // 判断当前行是否为方法头
+        String fullLineText = document.getCharsSequence().subSequence(lineStartOffset, lineEndOffset).toString();
+        if (isMethodHeader(fullLineText)) {
+            // 若是方法头，缩进增加一格，假设一格为 4 个空格
+            indent += "    ";
         }
 
+        // 为插入的代码添加缩进
+        String indentedCopyCodeStr = addIndentToCode(copyCodeStr, indent);
+
+        if (!hasNonWhitespaceAfterCursor) {
+            // 如果光标之后没有非空白字符，删除当前行
+            WriteCommandAction.runWriteCommandAction(project, () -> {
+                document.deleteString(lineStartOffset, lineEndOffset);
+            });
+            offset = lineStartOffset;
+        } else {
+            // 如果光标之后有非空白字符，将插入位置移动到下一行开头
+            int nextLineStart = document.getLineStartOffset(lineNumber + 1);
+            offset = nextLineStart;
+        }
+
+        int finalOffset = offset;
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            document.insertString(offset, copyCodeStr);
+            document.insertString(finalOffset, indentedCopyCodeStr);
         });
     }
 
-    private int findVariableStartOffset(Document document, int offset) {
-        int start = offset;
-        while (start > 0) {
-            char c = document.getCharsSequence().charAt(start - 1);
-            if (!Character.isJavaIdentifierPart(c)) {
-                break;
-            }
-            start--;
+    /**
+     * 获取指定行的缩进
+     * @param document 文档对象
+     * @param lineNumber 行号
+     * @return 缩进字符串
+     */
+    private String getLineIndent(Document document, int lineNumber) {
+        int lineStartOffset = document.getLineStartOffset(lineNumber);
+        int lineEndOffset = document.getLineEndOffset(lineNumber);
+        CharSequence lineText = document.getCharsSequence().subSequence(lineStartOffset, lineEndOffset);
+        int indentLength = 0;
+        while (indentLength < lineText.length() && Character.isWhitespace(lineText.charAt(indentLength))) {
+            indentLength++;
         }
-        return start;
+        return lineText.subSequence(0, indentLength).toString();
     }
 
-    private int findVariableEndOffset(Document document, int offset) {
-        int end = offset;
-        int length = document.getTextLength();
-        while (end < length) {
-            char c = document.getCharsSequence().charAt(end);
-            if (!Character.isJavaIdentifierPart(c)) {
-                break;
-            }
-            end++;
+    /**
+     * 判断当前行是否为方法头
+     * @param lineText 当前行的文本内容
+     * @return 如果是方法头返回 true，否则返回 false
+     */
+    private boolean isMethodHeader(String lineText) {
+        // 去除注释内容，避免注释中的括号影响判断
+        lineText = removeComments(lineText);
+        // 去除前后空白字符
+        lineText = lineText.trim();
+        // 简单判断，包含 ( 和 ) 且不包含 ; 认为是方法头
+        return lineText.contains("(") && lineText.contains(")") && !lineText.contains(";");
+    }
+
+
+    /**
+     * 移除字符串中的注释内容
+     * @param lineText 包含注释的字符串
+     * @return 移除注释后的字符串
+     */
+    private String removeComments(String lineText) {
+        // 移除单行注释
+        int singleCommentIndex = lineText.indexOf("//");
+        if (singleCommentIndex != -1) {
+            lineText = lineText.substring(0, singleCommentIndex);
         }
-        return end;
+        // 移除多行注释开始标记之后的内容（简单处理，不处理嵌套情况）
+        int multiCommentStartIndex = lineText.indexOf("/*");
+        if (multiCommentStartIndex != -1) {
+            lineText = lineText.substring(0, multiCommentStartIndex);
+        }
+        return lineText;
+    }
+
+    /**
+     * 为代码的每一行添加缩进
+     * @param code 原始代码
+     * @param indent 缩进字符串
+     * @return 添加缩进后的代码
+     */
+    private String addIndentToCode(String code, String indent) {
+        StringBuilder indentedCode = new StringBuilder();
+        String[] lines = code.split("\\r?\\n");
+        for (int i = 0; i < lines.length; i++) {
+            indentedCode.append(indent).append(lines[i]);
+            if (i < lines.length - 1) {
+                indentedCode.append("\n");
+            }
+        }
+        return indentedCode.toString();
     }
 
     @Override

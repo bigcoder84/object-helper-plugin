@@ -10,6 +10,7 @@ public class JavaClassName {
     public static final String LONG_TYPE = "java.lang.Long";
     public static final String SHORT_TYPE = "java.lang.Short";
     public static final String BYTE_TYPE = "java.lang.Byte";
+    public static final String BOOLEAN_TYPE = "java.lang.Boolean";
     public static final String DOUBLE_TYPE = "java.lang.Double";
     public static final String FLOAT_TYPE = "java.lang.Float";
     public static final String DATE_TYPE = "java.util.Date";
@@ -22,6 +23,7 @@ public class JavaClassName {
     public static final String BASE_BYTE_TYPE = "byte";
     public static final String BASE_DOUBLE_TYPE = "double";
     public static final String BASE_FLOAT_TYPE = "float";
+    public static final String BASE_BOOL_TYPE = "boolean";
 
     public static final String COLLECTION_TYPE = "java.util.Collection";
     public static final String MAP_TYPE = "java.util.Map";
