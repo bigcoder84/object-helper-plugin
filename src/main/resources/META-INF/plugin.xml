@@ -6,8 +6,10 @@
 
   <description><![CDATA[
     This is a Java object toolset. Using document: <a href="https://github.com/bigcoder84/object-helper-plugin">GitHub</a>
-    <li>Copy the object</li>
+    <li>Object Copy Method</li>
     <img style="width: 300px" src="https://image.bigcoder.cn/7fce876e-fa94-4780-bb14-584068c35963.gif"></img>
+    <li>Object Copy</li>
+    <img style="width: 300px" src="https://image.bigcoder.cn/20250614092815.gif"></img>
     <li>Class to JSON</li>
     <img style="width: 300px" src="https://image.bigcoder.cn/20210227223302.gif"></img>
     <li>Class to Thrift IDL</li>
