@@ -10,24 +10,24 @@ import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.components.JBTextField;
 import com.intellij.util.ArrayUtil;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.jetbrains.annotations.Nullable;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 public class ClassSearchDialog extends DialogWrapper {
 
@@ -36,11 +36,13 @@ public class ClassSearchDialog extends DialogWrapper {
     private JBList<PsiClass> classList;
     private PsiClass selectedClass;
     private Timer timer;
-    private static final int DEBOUNCE_DELAY = 500; // 防抖延迟时间，单位：毫秒
+    private static final int DEBOUNCE_DELAY = 800; // 防抖延迟时间，单位：毫秒
     // 定义默认宽度，可按需调整
     private static final int DEFAULT_WIDTH = 700;
     // 定义默认高度，可按需调整
     private static final int DEFAULT_HEIGHT = 600;
+    private JLabel loadingLabel;
+    private Map<String, List<PsiClass>> searchCache = new HashMap<>();
 
     public ClassSearchDialog(@Nullable Project project, String title) {
         super(project);
@@ -57,7 +59,6 @@ public class ClassSearchDialog extends DialogWrapper {
         SwingUtilities.invokeLater(() -> classNameField.requestFocusInWindow());
     }
 
-
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
@@ -71,9 +72,17 @@ public class ClassSearchDialog extends DialogWrapper {
         classList = new JBList<>();
         classList.setCellRenderer(new ClassListCellRenderer());
         JBScrollPane scrollPane = new JBScrollPane(classList);
-        panel.add(scrollPane, BorderLayout.CENTER);
 
-        // 输入框文本变化监听，添加防抖机制
+        // 创建加载提示标签
+        loadingLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        loadingLabel.setVisible(false); // 初始状态隐藏
+
+        JPanel listPanel = new JPanel(new BorderLayout());
+        listPanel.add(scrollPane, BorderLayout.CENTER);
+        listPanel.add(loadingLabel, BorderLayout.SOUTH);
+
+        panel.add(listPanel, BorderLayout.CENTER);
+
         classNameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -141,7 +150,6 @@ public class ClassSearchDialog extends DialogWrapper {
         return panel;
     }
 
-
     private void debounceUpdateClassList() {
         if (timer != null) {
             timer.cancel();
@@ -150,9 +158,53 @@ public class ClassSearchDialog extends DialogWrapper {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                SwingUtilities.invokeLater(() -> updateClassList());
+                // 显示加载提示
+                SwingUtilities.invokeLater(() -> loadingLabel.setVisible(true));
+                // 异步执行搜索操作
+                SwingWorker<List<PsiClass>, Void> worker = new SwingWorker<>() {
+                    @Override
+                    protected List<PsiClass> doInBackground() {
+                        return updateClassListInBackground();
+                    }
+
+                    @Override
+                    protected void done() {
+                        try {
+                            List<PsiClass> matchedClasses = get();
+                            SwingUtilities.invokeLater(() -> {
+                                updateClassListUI(matchedClasses);
+                                // 隐藏加载提示
+                                loadingLabel.setVisible(false);
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            // 出现异常也隐藏加载提示
+                            SwingUtilities.invokeLater(() -> loadingLabel.setVisible(false));
+                        }
+                    }
+                };
+                worker.execute();
             }
         }, DEBOUNCE_DELAY);
+    }
+
+    private List<PsiClass> updateClassListInBackground() {
+        String query = classNameField.getText().trim();
+        if (!query.isEmpty()) {
+            if (searchCache.containsKey(query)) {
+                return searchCache.get(query);
+            }
+            List<PsiClass> matchedClasses = PsiUtils.matchPsiClassByName(this.project, query);
+            // 按优先级排序
+            matchedClasses.sort(this::compareClasses);
+            searchCache.put(query, matchedClasses);
+            return matchedClasses;
+        }
+        return Collections.emptyList();
+    }
+
+    private void updateClassListUI(List<PsiClass> matchedClasses) {
+        classList.setListData(ArrayUtil.toObjectArray(matchedClasses, PsiClass.class));
     }
 
     private void updateClassList() {
@@ -273,5 +325,4 @@ public class ClassSearchDialog extends DialogWrapper {
             return result.toString();
         }
     }
-
 }

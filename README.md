@@ -5,10 +5,10 @@
 </div>
 <br/>
 <div align="center">
-	<img src="https://img.shields.io/badge/version-v1.4.0-blue">
+	<img src="https://img.shields.io/badge/version-v1.4.1-blue">
 	<img src="https://img.shields.io/badge/license-Apache%202-red">
 	<img src="https://img.shields.io/badge/size-3.95%20MB-yellowgreen">
-	<img src="https://img.shields.io/badge/download-6.1k-green">
+	<img src="https://img.shields.io/badge/download-6.5k-green">
 </div>
 
 JetBrains Intellij ObjectHelper 插件致力于消除开发者重复性的低效工作，助力开发者将更多精力聚焦于核心业务逻辑开发，显著提升开发效率。
