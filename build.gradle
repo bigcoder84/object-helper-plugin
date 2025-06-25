@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'cn.bigcoder.plugin'
-version '1.4.0'
+version '1.4.1'
 
 repositories {
     mavenCentral()
@@ -28,10 +28,13 @@ intellij {
     plugins = ['com.intellij.java']
 }
 patchPluginXml {
-    sinceBuild = '211'
+    sinceBuild = '231'
     untilBuild = '301.*'
     changeNotes = """
-        1. new feature: Object Copy support lambda and common scene.
+        1.Fixed the support for boolean type fields in class to json conversion.
+        2.Added support for Map type fields in class to json conversion.
+        3.Optimized the code experience of the Object Copy function.
+        4.Optimized the plugin compatibility.
       """
 }
 test {

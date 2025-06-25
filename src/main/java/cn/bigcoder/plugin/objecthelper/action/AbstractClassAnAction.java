@@ -2,6 +2,7 @@ package cn.bigcoder.plugin.objecthelper.action;
 
 import static cn.bigcoder.plugin.objecthelper.common.util.PsiUtils.setActionInvisible;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
@@ -25,4 +26,10 @@ public abstract class AbstractClassAnAction extends AnAction {
         }
         super.update(anActionEvent);
     }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
+    }
+
 }
